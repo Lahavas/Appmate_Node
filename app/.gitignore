@@ -1,0 +1,5 @@
+## Appmate Ignore File #
+
+config/
+
+node_module/
