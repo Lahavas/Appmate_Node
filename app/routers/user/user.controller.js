@@ -117,6 +117,10 @@ exports.showMyProfile = async (req, res, next) => {
         {
           model: Models.Identity,
           attributes: [ 'identityName' ]
+        },
+        {
+          model: Models.UserPlace,
+          attributes: [ 'address' ]
         }
       ]
     });
@@ -254,6 +258,10 @@ exports.showOtherProfile = async (req, res, next) => {
         {
           model: Models.Identity,
           attributes: [ 'identityName' ]
+        },
+        {
+          model: Models.UserPlace,
+          attributes: [ 'address' ]
         }
       ]
     });
