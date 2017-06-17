@@ -85,17 +85,43 @@ exports.showMyProfile = async (req, res, next) => {
         'introduction', 'portfolio', 'userImage',
         'highfiveNumber', 'passNumber',
         [
-          Models.sequelize.fn( 'COUNT',
-            Models.sequelize.col( 'Followers.id' )
-          ), 'followingNumber'
+          [
+            Models.sequelize.fn( 'COUNT',
+              Models.sequelize.col( 'Followers.id' )
+            ), 'followingNumber'
+          ]
         ],
         [
-          Models.sequelize.fn( 'COUNT',
-            Models.sequelize.col( 'Followings.id' )
-          ), 'followerNumber'
-        ],
+          [
+            Models.sequelize.fn( 'COUNT',
+              Models.sequelize.col( 'Followings.id' )
+            ), 'followingNumber'
+          ]
+        ]
       ],
       include: [
+        // {
+        //   model: Models.User,
+        //   as: 'Followers',
+        //   attributes: [
+        //     [
+        //       Models.sequelize.fn( 'COUNT',
+        //         Models.sequelize.col( 'Followers.id' )
+        //       ), 'followingNumber'
+        //     ]
+        //   ]
+        // },
+        // {
+        //   model: Models.User,
+        //   as: 'Followings',
+        //   attributes: [
+        //     [
+        //       Models.sequelize.fn( 'COUNT',
+        //         Models.sequelize.col( 'Followings.id' )
+        //       ), 'followerNumber'
+        //     ]
+        //   ]
+        // },
         {
           model: Models.Skill,
           attributes: [ 'skillName' ],
@@ -111,16 +137,16 @@ exports.showMyProfile = async (req, res, next) => {
           model: Models.ProjectField,
           attributes: [ 'projectFieldName' ],
           through: { attributes: [] }
+        }
+      ],
+      group: [
+        {
+          model: Models.User,
+          as: 'Followers'
         },
         {
           model: Models.User,
-          as: 'Followers',
-          attributes: []
-        },
-        {
-          model: Models.User,
-          as: 'Followings',
-          attributes: []
+          as: 'Followings'
         }
       ]
     });

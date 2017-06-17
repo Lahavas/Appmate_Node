@@ -67,7 +67,7 @@ exports.showProject = async (req, res, next) => {
       },
       attributes: [
         'id', 'projectName', 'projectImage',
-        'projectDescription', 'isPass',
+        'projectDescription',
         [
           Models.sequelize.fn('DATEDIFF',
             Models.sequelize.col('projectClosingDate'),
