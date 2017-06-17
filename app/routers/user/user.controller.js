@@ -136,6 +136,64 @@ exports.showMyProfile = async (req, res, next) => {
   }
 };
 
+exports.showMyProject = async (req, res, next) => {
+  try {
+    // User Authorization
+    const myUserId = parseInt(req.headers.userid, 10);
+    if (!myUserId) {
+      return next(new Error('No myUserId'));
+    }
+
+    const projectRun = await Models.
+
+    const user = await Models.User.findOne({
+      where: {
+        id: myUserId
+      },
+      attributes: [
+        'userNickname', 'userFirstJob', 'userSecondJob', 'userThirdJob',
+        'introduction', 'portfolio', 'userImage',
+        'highfiveNumber', 'passNumber'
+      ],
+      include: [
+        {
+          model: Models.Skill,
+          attributes: [ 'skillName' ],
+          through: { attributes: [] }
+        },
+        {
+          model: Models.Skill,
+          as: 'WantedSkills',
+          attributes: [ 'skillName' ],
+          through: { attributes: [] }
+        },
+        {
+          model: Models.ProjectField,
+          attributes: [ 'projectFieldName' ],
+          through: { attributes: [] }
+        }
+      ]
+    });
+
+    user.dataValues.followerNumber = followerNumber;
+    user.dataValues.followingNumber = followingNumber;
+
+    if (!user) {
+      throw new Error("Error to create tuple");
+    }
+
+    return res.status(201).json({
+      'msg': 'success',
+      'data': {
+        'user': user
+      }
+    });
+  }
+  catch (error) {
+    return next(error);
+  }
+};
+
 exports.showOtherProfile = async (req, res, next) => {
   try {
     // User Authorization

@@ -12,7 +12,10 @@ router.route('/login')
 router.route('/profile')
   .get(controller.showMyProfile)
 //   .post(controller.updateMyProfile);
-//
+
+router.route('/project')
+  .get(controller.showMyProject)
+
 // router.route('/badges')
 //   .get(controller.showMybadges);
 //
