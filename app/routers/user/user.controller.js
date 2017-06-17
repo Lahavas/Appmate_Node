@@ -177,46 +177,96 @@ exports.showOtherProfile = async (req, res, next) => {
       return next(new Error('No myUserId'));
     }
 
-    const id = parseInt(req.params.userId, 10);
-    if (!id) {
-      throw new Error("No id");
+    const userId = parseInt(req.params.userId, 10);
+    if (!userId) {
+      return next(new Error('No userId'));
     }
 
     const user = await Models.User.findOne({
       where: {
-        id: id
-      }
+        id: userId
+      },
+      attributes: [
+        'userNickname', 'userFirstJob', 'userSecondJob', 'userThirdJob',
+        'introduction', 'portfolio', 'userImage',
+        'highfiveNumber', 'passNumber'
+        // ,
+        // [
+        //   [
+        //     Models.sequelize.fn( 'COUNT',
+        //       Models.sequelize.col( 'Followers.id' )
+        //     ), 'followingNumber'
+        //   ]
+        // ],
+        // [
+        //   [
+        //     Models.sequelize.fn( 'COUNT',
+        //       Models.sequelize.col( 'Followings.id' )
+        //     ), 'followingNumber'
+        //   ]
+        // ]
+      ],
+      include: [
+        // {
+        //   model: Models.User,
+        //   as: 'Followers',
+        //   attributes: [
+        //     [
+        //       Models.sequelize.fn( 'COUNT',
+        //         Models.sequelize.col( 'Followers.id' )
+        //       ), 'followingNumber'
+        //     ]
+        //   ]
+        // },
+        // {
+        //   model: Models.User,
+        //   as: 'Followings',
+        //   attributes: [
+        //     [
+        //       Models.sequelize.fn( 'COUNT',
+        //         Models.sequelize.col( 'Followings.id' )
+        //       ), 'followerNumber'
+        //     ]
+        //   ]
+        // },
+        {
+          model: Models.Skill,
+          attributes: [ 'skillName' ],
+          through: { attributes: [] }
+        },
+        {
+          model: Models.Skill,
+          as: 'WantedSkills',
+          attributes: [ 'skillName' ],
+          through: { attributes: [] }
+        },
+        {
+          model: Models.ProjectField,
+          attributes: [ 'projectFieldName' ],
+          through: { attributes: [] }
+        }
+      ]
+      // ,
+      // group: [
+      //   {
+      //     model: Models.User,
+      //     as: 'Followers'
+      //   },
+      //   {
+      //     model: Models.User,
+      //     as: 'Followings'
+      //   }
+      // ]
     });
 
-    const userSkill = await Models.UserSkill.findAll({
-      where: {
-        userId: id
-      }
-    });
-
-    const userWantedSkill = await Models.UserWantedSkill.findAll({
-      where: {
-        userId: id
-      }
-    });
-
-    const userProjectField = await Models.UserProjectField.findAll({
-      where: {
-        userId: id
-      }
-    });
-
-    if (!user || !userSkill || !userWantedSkill || !userProjectField) {
+    if (!user) {
       throw new Error("Error to create tuple");
     }
 
     return res.status(201).json({
       'msg': 'success',
       'data': {
-        'user': user,
-        'userSkill': userSkill,
-        'userWantedSkill': userWantedSkill,
-        'userProjectField': userProjectField
+        'user': user
       }
     });
   }
