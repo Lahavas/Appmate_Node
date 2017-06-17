@@ -78,7 +78,7 @@ exports.showMyProfile = async (req, res, next) => {
 
     const user = await Models.User.findOne({
       where: {
-        id: userId
+        id: myUserId
       },
       attributes: {
         // 'userNickname', 'userFirstJob', 'userSecondJob', 'userThirdJob',
@@ -274,11 +274,11 @@ exports.showUserList = async (req, res, next) => {
           attributes: []
         }
       ],
-      having: {
-        distance: {
-          $between: [0.1, 10000]
-        }
-      },
+      // having: {
+      //   distance: {
+      //     $between: [0.1, 10000]
+      //   }
+      // },
       order: [
         [
           Models.sequelize.fn( 'ST_Distance',
