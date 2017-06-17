@@ -80,23 +80,21 @@ exports.showMyProfile = async (req, res, next) => {
       where: {
         id: myUserId
       },
-      attributes: {
-        // 'userNickname', 'userFirstJob', 'userSecondJob', 'userThirdJob',
-        // 'introduction', 'portfolio', 'userImage',
-        // 'highfiveNumber', 'passNumber',
-        include : [
-          [
-            Models.sequelize.fn( 'COUNT',
-              Models.sequelize.col( 'UserFollow.followerid' )
-            ), 'followingNumber'
-          ],
-          [
-            Models.sequelize.fn( 'COUNT',
-              Models.sequelize.col( 'UserFollow.followingid' )
-            ), 'followerNumber'
-          ],
-        ]
-      },
+      attributes: [
+        'userNickname', 'userFirstJob', 'userSecondJob', 'userThirdJob',
+        'introduction', 'portfolio', 'userImage',
+        'highfiveNumber', 'passNumber',
+        [
+          Models.sequelize.fn( 'COUNT',
+            Models.sequelize.col( 'Followers.id' )
+          ), 'followingNumber'
+        ],
+        [
+          Models.sequelize.fn( 'COUNT',
+            Models.sequelize.col( 'Followings.id' )
+          ), 'followerNumber'
+        ],
+      ],
       include: [
         {
           model: Models.Skill,
@@ -113,6 +111,16 @@ exports.showMyProfile = async (req, res, next) => {
           model: Models.ProjectField,
           attributes: [ 'projectFieldName' ],
           through: { attributes: [] }
+        },
+        {
+          model: Models.User,
+          as: 'Followers',
+          attributes: []
+        },
+        {
+          model: Models.User,
+          as: 'Followings',
+          attributes: []
         }
       ]
     });
@@ -255,7 +263,7 @@ exports.showUserList = async (req, res, next) => {
       //
       // },
       attributes: [
-        'id', 'userNickname', 'userImage',
+        'id', 'userNickname', 'userImage', 'userFirstJob',
         [
           Models.sequelize.fn( 'ST_Distance_Sphere',
             Models.sequelize.fn('ST_GeomFromText', `POINT(${longitude} ${latitude})`),
