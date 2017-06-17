@@ -38,13 +38,13 @@ router.route('/profile/:userId')
   .get(controller.showOtherProfile);
 
 router.route('/project/:userId')
-  .get(controller.showOtherProject)  
+  .get(controller.showOtherProject)
 
 // router.route('/following/:userId')
 //   .post(controller.setFollowing);
 
-router.route('/badges/:userId')
-  .get(controller.showOtherBadges);
+// router.route('/badges/:userId')
+//   .get(controller.showOtherBadges);
 
 // router.route('/highfive/:userId')
 //   .post(controller.setHighfive);

@@ -566,46 +566,46 @@ exports.showOtherProject = async (req, res, next) => {
   }
 };
 
-exports.showOtherBadges = async (req, res, next) => {
-  try {
-    // User Authorization
-    const myUserId = parseInt(req.headers.userid, 10);
-    if (!myUserId) {
-      return next(new Error('No myUserId'));
-    }
-
-    const id = parseInt(req.params.userId, 10);
-    if (!id) {
-      throw new Error("No id");
-    }
-
-    const user = await Models.User.findOne({
-      where: {
-        id: id
-      },
-      attributes: [
-        'id'
-      ],
-      include: [{
-        model: Models.UserBadge
-      }]
-    });
-
-    if (!user) {
-      throw new Error("Error to create tuple");
-    }
-
-    return res.status(201).json({
-      'msg': 'success',
-      'data': {
-        'user': user
-      }
-    });
-  }
-  catch (error) {
-    return next(error);
-  }
-}
+// exports.showOtherBadges = async (req, res, next) => {
+//   try {
+//     // User Authorization
+//     const myUserId = parseInt(req.headers.userid, 10);
+//     if (!myUserId) {
+//       return next(new Error('No myUserId'));
+//     }
+//
+//     const id = parseInt(req.params.userId, 10);
+//     if (!id) {
+//       throw new Error("No id");
+//     }
+//
+//     const user = await Models.User.findOne({
+//       where: {
+//         id: id
+//       },
+//       attributes: [
+//         'id'
+//       ],
+//       include: [{
+//         model: Models.UserBadge
+//       }]
+//     });
+//
+//     if (!user) {
+//       throw new Error("Error to create tuple");
+//     }
+//
+//     return res.status(201).json({
+//       'msg': 'success',
+//       'data': {
+//         'user': user
+//       }
+//     });
+//   }
+//   catch (error) {
+//     return next(error);
+//   }
+// }
 
 exports.showUserList = async (req, res, next) => {
   try {
@@ -651,11 +651,11 @@ exports.showUserList = async (req, res, next) => {
           attributes: []
         }
       ],
-      // having: {
-      //   distance: {
-      //     $between: [0.1, 10000]
-      //   }
-      // },
+      having: {
+        userId: {
+          $not: myUserId
+        }
+      },
       order: [
         [
           Models.sequelize.fn( 'ST_Distance',
