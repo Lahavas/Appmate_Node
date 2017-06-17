@@ -144,8 +144,6 @@ exports.showMyProject = async (req, res, next) => {
       return next(new Error('No myUserId'));
     }
 
-    const projectRun = await Models.
-
     const user = await Models.User.findOne({
       where: {
         id: myUserId
