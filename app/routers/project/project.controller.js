@@ -331,9 +331,9 @@ exports.setProjectLike = async (req, res, next) => {
       return next(new Error('No projectId'));
     }
 
-    console.log(req.body.check);
+    console.log(typeof req.body.check);
 
-    if (req.body.check == true) {
+    if (req.body.check == 'true') {
       const projectLike = await Models.ProjectLike.create({
         projectId: projectId,
         likeUserId: myUserId
