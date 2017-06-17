@@ -21,7 +21,8 @@ router.route('/:projectId')
 //   .get(controller.showProjectApplicants);
 //
 router.route('/:projectId/likes')
-  .get(controller.showProjectLikes);
+  .get(controller.showProjectLikes)
+  .post(controller.setProjectLike);
 
 router.route('/:projectId/fields')
   .get(controller.showProjectFields);

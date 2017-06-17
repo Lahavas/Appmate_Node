@@ -312,6 +312,41 @@ exports.showProjectLikes = async (req, res, next) => {
   }
 };
 
+exports.setProjectLike = async (req, res, next) => {
+  try {
+    // User Authorization
+    const myUserId = parseInt(req.headers.userid, 10);
+    if (!myUserId) {
+      return next(new Error('No myUserId'));
+    }
+
+    const projectId = parseInt(req.params.projectId, 10);
+    if (!projectId) {
+      return next(new Error('No projectId'));
+    }
+
+    if (req.body.check == 'true') {
+      const projectLike = Models.ProjectLike.create({
+        projectId: projectId,
+        likeUserId: myUserId
+      });
+    } else {
+      const projectLike = Models.ProjectLike.destroy({
+        where: {
+          likeUserId: myUserId
+        }
+      })
+    }
+
+    return res.status(201).json({
+      'msg': 'success'
+    });
+  }
+  catch (error) {
+    return next(error);
+  }
+};
+
 exports.showProjectFields = async (req, res, next) => {
   try {
     // User Authorization
