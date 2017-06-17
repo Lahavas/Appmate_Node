@@ -11,7 +11,7 @@ module.exports = (sequelize, DataType) => {
 
   UserPlace.associate = db => {
     // 1:1 Association, One place belongs to one user
-    db.UserPlace.belongsTo(db.User, { foreignKey: 'userId' });
+    db.User.hasOne(db.UserPlace, { foreignKey: 'userId' });
   };
 
   return UserPlace;
