@@ -105,6 +105,11 @@ exports.showProject = async (req, res, next) => {
             Models.sequelize.col('projectClosingDate'),
             Models.sequelize.col('projectOpeningDate')
           ), 'dDay'
+        ],
+        [
+          Models.sequelize.fn('COUNT',
+            Models.sequelize.col('Likes.id')
+          ), 'isLike'
         ]
       ],
       include: [
@@ -112,6 +117,16 @@ exports.showProject = async (req, res, next) => {
           model: Models.User,
           as: 'Owner',
           attributes: [ 'id', 'userNickname', 'userImage' ]
+        },
+        {
+          model: Models.User,
+          as: 'Likes',
+          attributes: [],
+          through: {
+            where: {
+              likeUserId: myUserId
+            }
+          }
         }
       ]
     });
