@@ -333,7 +333,14 @@ exports.setProjectLike = async (req, res, next) => {
     } else {
       const projectLike = Models.ProjectLike.destroy({
         where: {
-          likeUserId: myUserId
+          $and: [
+            {
+              projectId: projectId
+            },
+            {
+              likeUserId: myUserId
+            }
+          ]
         }
       })
     }
