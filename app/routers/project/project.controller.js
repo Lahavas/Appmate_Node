@@ -73,7 +73,13 @@ exports.showProjectList = async (req, res, next) => {
 //     }
 //
 //     if (req.body.projectId) {
+//       const project = await Models.Project.Update({
+//         where: {
+//           id: req.body.projectId
+//         },
 //
+//
+//       })
 //     }
 //
 //     const project = await Models.Project.findOrCreate({
@@ -326,12 +332,12 @@ exports.setProjectLike = async (req, res, next) => {
     }
 
     if (req.body.check == 'true') {
-      const projectLike = Models.ProjectLike.create({
+      const projectLike = await Models.ProjectLike.create({
         projectId: projectId,
         likeUserId: myUserId
       });
     } else {
-      const projectLike = Models.ProjectLike.destroy({
+      const projectLike = await Models.ProjectLike.destroy({
         where: {
           $and: [
             {
@@ -345,8 +351,55 @@ exports.setProjectLike = async (req, res, next) => {
       })
     }
 
+    const projects = await Models.Project.findAll({
+      where: {
+        'ownerId': {
+          $not: myUserId
+        }
+      },
+      attributes: [
+        'id', 'projectName', 'projectImage',
+        [
+          Models.sequelize.fn('DATEDIFF',
+            Models.sequelize.col('projectClosingDate'),
+            Models.sequelize.col('projectOpeningDate')
+          ), 'dDay'
+        ],
+        [
+          Models.sequelize.fn('COUNT',
+            Models.sequelize.col('Likes.id')
+          ), 'isLike'
+        ]
+      ],
+      include: [
+        {
+          model: Models.User,
+          as: 'Owner',
+          attributes: [ 'id', 'userNickname', 'userImage' ]
+        },
+        {
+          model: Models.User,
+          as: 'Likes',
+          attributes: [],
+          through: {
+            where: {
+              'likeUserid': myUserId
+            }
+          }
+        }
+      ],
+      group: [ 'id' ]
+    });
+
+    if (!projects) {
+      return next(new Error('Error to create tuple'));
+    }
+
     return res.status(201).json({
-      'msg': 'success'
+      'msg': 'success',
+      'data': {
+        'projects': projects
+      }
     });
   }
   catch (error) {
