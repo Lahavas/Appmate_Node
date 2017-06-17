@@ -9,11 +9,11 @@ exports.showProjectList = async (req, res, next) => {
     }
 
     const projects = await Models.Project.findAll({
-      // where: {
-      //   ownerId: {
-      //     $not: userId
-      //   }
-      // },
+      where: {
+        'ownerId': {
+          $not: myUserId
+        }
+      },
       attributes: [
         'id', 'projectName', 'projectImage',
         [
@@ -21,6 +21,11 @@ exports.showProjectList = async (req, res, next) => {
             Models.sequelize.col('projectClosingDate'),
             Models.sequelize.col('projectOpeningDate')
           ), 'dDay'
+        ],
+        [
+          Models.sequelize.fn('COUNT',
+            Models.sequelize.col('Likes.id')
+          ), 'isLike'
         ]
       ],
       include: [
@@ -28,8 +33,19 @@ exports.showProjectList = async (req, res, next) => {
           model: Models.User,
           as: 'Owner',
           attributes: [ 'id', 'userNickname', 'userImage' ]
+        },
+        {
+          model: Models.User,
+          as: 'Likes',
+          attributes: [],
+          through: {
+            where: {
+              'likeUserid': myUserId
+            }
+          }
         }
-      ]
+      ],
+      group: [ 'id' ]
     });
 
     if (!projects) {
@@ -124,11 +140,12 @@ exports.showProject = async (req, res, next) => {
           attributes: [],
           through: {
             where: {
-              likeUserId: myUserId
+              'likeUserId': myUserId
             }
           }
         }
-      ]
+      ],
+      group: [ 'id' ]
     });
 
     if (!project) {
