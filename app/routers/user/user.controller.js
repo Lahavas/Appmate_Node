@@ -113,6 +113,10 @@ exports.showMyProfile = async (req, res, next) => {
           model: Models.ProjectField,
           attributes: [ 'projectFieldName' ],
           through: { attributes: [] }
+        },
+        {
+          model: Models.Identity,
+          attributes: [ 'identityName' ]
         }
       ]
     });
@@ -169,6 +173,10 @@ exports.showMyProject = async (req, res, next) => {
           model: Models.ProjectField,
           attributes: [ 'projectFieldName' ],
           through: { attributes: [] }
+        },
+        {
+          model: Models.Identity,
+          attributes: [ 'identityName' ]
         }
       ]
     });
@@ -242,6 +250,10 @@ exports.showOtherProfile = async (req, res, next) => {
           model: Models.ProjectField,
           attributes: [ 'projectFieldName' ],
           through: { attributes: [] }
+        },
+        {
+          model: Models.Identity,
+          attributes: [ 'identityName' ]
         }
       ]
     });

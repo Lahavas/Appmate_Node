@@ -21,8 +21,9 @@ module.exports = (sequelize, DataType) => {
     portfolio: { type: DataType.STRING , allowNull: false, defaultValue: '' },
     userImage: { type: DataType.STRING, allowNull: false },
 
-    // identity, character 기능 구현시
-    // identityId: { type: DataType.INTEGER, allowNull: false, references: { model: Models.Identity, key: 'id' }},
+    identityId: { type: DataType.INTEGER, allowNull: false, references: { model: Models.Identity, key: 'id' }},
+
+    // character 기능 구현시
     // characterId: { type: DataType.INTEGER, allowNull: false , references: { model: Models.Character, key: 'id' }},
 
     // 회사 인중 구현시
@@ -34,9 +35,9 @@ module.exports = (sequelize, DataType) => {
 
   User.associate = db => {
 
-    // identity, character 기능 구현시
-    // // 1:1 Association, One user belongs to one identity
-    // db.User.belongsTo(db.Identity, { foreignKey: 'identityId' });
+    // 1:1 Association, One user belongs to one identity
+    db.User.belongsTo(db.Identity, { foreignKey: 'identityId' });
+    // character 기능 구현시
     // // 1:1 Association, One user belongs to one character
     // db.User.belongsTo(db.Character, { foreignKey: 'characterId' });
   };
