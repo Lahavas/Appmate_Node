@@ -1,0 +1,100 @@
+const models = require('../models');
+
+module.exports = {
+  up: (queryInterface, Sequelize) => {
+
+    return queryInterface.bulkInsert('ProjectFields', [
+      { id: 1, projectFieldName: 'cbb2b' },
+      { id: 2, projectFieldName: 'cbb2c' },
+      { id: 3, projectFieldName: 'cbc2c' },
+      { id: 4, projectFieldName: 'cbo2o' },
+      { id: 5, projectFieldName: 'cbapp' },
+      { id: 6, projectFieldName: 'cbbigdata' },
+      { id: 7, projectFieldName: 'cbcommerce' },
+      { id: 8, projectFieldName: 'cbnetwork' },
+      { id: 9, projectFieldName: 'cbai' },
+      { id: 10, projectFieldName: 'cbrobot' },
+      { id: 11, projectFieldName: 'cbcar' },
+      { id: 12, projectFieldName: 'cbdrone' },
+      { id: 13, projectFieldName: 'cbentertainment' },
+      { id: 14, projectFieldName: 'cbEcommerce' },
+      { id: 15, projectFieldName: 'cbCommunity' },
+      { id: 16, projectFieldName: 'cbWebtoon' },
+      { id: 17, projectFieldName: 'cbFashion' },
+      { id: 18, projectFieldName: 'cbMusic' },
+      { id: 19, projectFieldName: 'cbMegazine' },
+      { id: 20, projectFieldName: 'cbBlog' },
+      { id: 21, projectFieldName: 'cbLifeStyle' },
+      { id: 22, projectFieldName: 'cbMoney' },
+      { id: 23, projectFieldName: 'cbTrip' },
+      { id: 24, projectFieldName: 'cbGame' },
+      { id: 25, projectFieldName: 'cbFood' },
+      { id: 26, projectFieldName: 'cbSchedule' },
+      { id: 27, projectFieldName: 'cbHobby' },
+      { id: 28, projectFieldName: 'cbFitness' },
+      { id: 29, projectFieldName: 'cbBitCoin' },
+      { id: 30, projectFieldName: 'cbBioTech' },
+      { id: 31, projectFieldName: 'cbSocial' },
+      { id: 32, projectFieldName: 'cbFinTech' },
+      { id: 33, projectFieldName: 'cbHybrid' },
+      { id: 34, projectFieldName: 'cbHealthCare' },
+      { id: 35, projectFieldName: 'cbEducation' },
+      { id: 36, projectFieldName: 'cbEBook' },
+      { id: 37, projectFieldName: 'cbSpace' },
+      { id: 38, projectFieldName: 'cbSocialCompany' },
+      { id: 39, projectFieldName: 'cbPicture' },
+      { id: 40, projectFieldName: 'cbEnergy' },
+      { id: 41, projectFieldName: 'cbRecruiting' },
+      { id: 42, projectFieldName: 'cbWedding' },
+      { id: 43, projectFieldName: 'cbDoctor' },
+      { id: 44, projectFieldName: 'cbArt' },
+      { id: 45, projectFieldName: 'cbProductivity' },
+      { id: 46, projectFieldName: 'cbCoWork' },
+      { id: 47, projectFieldName: 'cbCompare' },
+      { id: 48, projectFieldName: 'cbPolitics' },
+      { id: 49, projectFieldName: 'cbHavingJob' },
+      { id: 50, projectFieldName: 'cbManufacture' },
+      { id: 51, projectFieldName: 'cbEco' },
+      { id: 52, projectFieldName: 'cbCosmetics' },
+      { id: 53, projectFieldName: 'cbTask' },
+      { id: 54, projectFieldName: 'cbLaundry' },
+      { id: 55, projectFieldName: 'cbMap' },
+      { id: 56, projectFieldName: 'cbChatBot' },
+      { id: 57, projectFieldName: 'cbVideo' },
+      { id: 58, projectFieldName: 'cbReservation' },
+      { id: 59, projectFieldName: 'cbSendingProduct' },
+      { id: 60, projectFieldName: 'cbSearching' },
+      { id: 61, projectFieldName: 'cbRanking' },
+      { id: 62, projectFieldName: 'cbDate' },
+      { id: 63, projectFieldName: 'cbDesign' },
+      { id: 64, projectFieldName: 'cbMarketing' },
+      { id: 65, projectFieldName: 'cbBusiness' },
+      { id: 66, projectFieldName: 'cbContents' },
+      { id: 67, projectFieldName: 'cbAd' },
+      { id: 68, projectFieldName: 'cbDevel' },
+      { id: 69, projectFieldName: 'cbUx' },
+      { id: 70, projectFieldName: 'cbRecommendation' },
+      { id: 71, projectFieldName: 'cbTablet' },
+      { id: 72, projectFieldName: 'cbEnglish' },
+      { id: 73, projectFieldName: 'cbForeigner' },
+      { id: 74, projectFieldName: 'cbTranslation' },
+      { id: 75, projectFieldName: 'cbFilter' },
+      { id: 76, projectFieldName: 'cbCoupon' },
+      { id: 77, projectFieldName: 'cbStar' },
+      { id: 78, projectFieldName: 'cbP2p' },
+      { id: 79, projectFieldName: 'cbLaw' },
+      { id: 80, projectFieldName: 'cbSecurity' },
+      { id: 81, projectFieldName: 'cbPlatform' }
+    ], {});
+  },
+
+  down: (queryInterface, Sequelize) => {
+    /*
+      Add reverting commands here.
+      Return a promise to correctly handle asynchronicity.
+
+      Example:
+      return queryInterface.bulkDelete('Person', null, {});
+    */
+  }
+};
