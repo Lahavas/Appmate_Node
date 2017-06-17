@@ -83,21 +83,22 @@ exports.showMyProfile = async (req, res, next) => {
       attributes: [
         'userNickname', 'userFirstJob', 'userSecondJob', 'userThirdJob',
         'introduction', 'portfolio', 'userImage',
-        'highfiveNumber', 'passNumber',
-        [
-          [
-            Models.sequelize.fn( 'COUNT',
-              Models.sequelize.col( 'Followers.id' )
-            ), 'followingNumber'
-          ]
-        ],
-        [
-          [
-            Models.sequelize.fn( 'COUNT',
-              Models.sequelize.col( 'Followings.id' )
-            ), 'followingNumber'
-          ]
-        ]
+        'highfiveNumber', 'passNumber'
+        // ,
+        // [
+        //   [
+        //     Models.sequelize.fn( 'COUNT',
+        //       Models.sequelize.col( 'Followers.id' )
+        //     ), 'followingNumber'
+        //   ]
+        // ],
+        // [
+        //   [
+        //     Models.sequelize.fn( 'COUNT',
+        //       Models.sequelize.col( 'Followings.id' )
+        //     ), 'followingNumber'
+        //   ]
+        // ]
       ],
       include: [
         // {
@@ -138,17 +139,18 @@ exports.showMyProfile = async (req, res, next) => {
           attributes: [ 'projectFieldName' ],
           through: { attributes: [] }
         }
-      ],
-      group: [
-        {
-          model: Models.User,
-          as: 'Followers'
-        },
-        {
-          model: Models.User,
-          as: 'Followings'
-        }
       ]
+      // ,
+      // group: [
+      //   {
+      //     model: Models.User,
+      //     as: 'Followers'
+      //   },
+      //   {
+      //     model: Models.User,
+      //     as: 'Followings'
+      //   }
+      // ]
     });
 
     if (!user) {
