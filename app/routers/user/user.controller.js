@@ -76,6 +76,18 @@ exports.showMyProfile = async (req, res, next) => {
       return next(new Error('No myUserId'));
     }
 
+    const followerNumber = await Models.UserFollow.count({
+      where: {
+        followerId: myUserId
+      }
+    });
+
+    const followingNumber = await Models.UserFollow.count({
+      where: {
+        followingId: myUserId
+      }
+    });
+
     const user = await Models.User.findOne({
       where: {
         id: myUserId
@@ -84,45 +96,8 @@ exports.showMyProfile = async (req, res, next) => {
         'userNickname', 'userFirstJob', 'userSecondJob', 'userThirdJob',
         'introduction', 'portfolio', 'userImage',
         'highfiveNumber', 'passNumber'
-        // ,
-        // [
-        //   [
-        //     Models.sequelize.fn( 'COUNT',
-        //       Models.sequelize.col( 'Followers.id' )
-        //     ), 'followingNumber'
-        //   ]
-        // ],
-        // [
-        //   [
-        //     Models.sequelize.fn( 'COUNT',
-        //       Models.sequelize.col( 'Followings.id' )
-        //     ), 'followingNumber'
-        //   ]
-        // ]
       ],
       include: [
-        // {
-        //   model: Models.User,
-        //   as: 'Followers',
-        //   attributes: [
-        //     [
-        //       Models.sequelize.fn( 'COUNT',
-        //         Models.sequelize.col( 'Followers.id' )
-        //       ), 'followingNumber'
-        //     ]
-        //   ]
-        // },
-        // {
-        //   model: Models.User,
-        //   as: 'Followings',
-        //   attributes: [
-        //     [
-        //       Models.sequelize.fn( 'COUNT',
-        //         Models.sequelize.col( 'Followings.id' )
-        //       ), 'followerNumber'
-        //     ]
-        //   ]
-        // },
         {
           model: Models.Skill,
           attributes: [ 'skillName' ],
@@ -140,18 +115,10 @@ exports.showMyProfile = async (req, res, next) => {
           through: { attributes: [] }
         }
       ]
-      // ,
-      // group: [
-      //   {
-      //     model: Models.User,
-      //     as: 'Followers'
-      //   },
-      //   {
-      //     model: Models.User,
-      //     as: 'Followings'
-      //   }
-      // ]
     });
+
+    user.dataValues.followerNumber = followerNumber;
+    user.dataValues.followingNumber = followingNumber;
 
     if (!user) {
       throw new Error("Error to create tuple");
@@ -182,6 +149,18 @@ exports.showOtherProfile = async (req, res, next) => {
       return next(new Error('No userId'));
     }
 
+    const followerNumber = await Models.UserFollow.count({
+      where: {
+        followerId: userId
+      }
+    });
+
+    const followingNumber = await Models.UserFollow.count({
+      where: {
+        followingId: userId
+      }
+    });
+
     const user = await Models.User.findOne({
       where: {
         id: userId
@@ -190,45 +169,8 @@ exports.showOtherProfile = async (req, res, next) => {
         'userNickname', 'userFirstJob', 'userSecondJob', 'userThirdJob',
         'introduction', 'portfolio', 'userImage',
         'highfiveNumber', 'passNumber'
-        // ,
-        // [
-        //   [
-        //     Models.sequelize.fn( 'COUNT',
-        //       Models.sequelize.col( 'Followers.id' )
-        //     ), 'followingNumber'
-        //   ]
-        // ],
-        // [
-        //   [
-        //     Models.sequelize.fn( 'COUNT',
-        //       Models.sequelize.col( 'Followings.id' )
-        //     ), 'followingNumber'
-        //   ]
-        // ]
       ],
       include: [
-        // {
-        //   model: Models.User,
-        //   as: 'Followers',
-        //   attributes: [
-        //     [
-        //       Models.sequelize.fn( 'COUNT',
-        //         Models.sequelize.col( 'Followers.id' )
-        //       ), 'followingNumber'
-        //     ]
-        //   ]
-        // },
-        // {
-        //   model: Models.User,
-        //   as: 'Followings',
-        //   attributes: [
-        //     [
-        //       Models.sequelize.fn( 'COUNT',
-        //         Models.sequelize.col( 'Followings.id' )
-        //       ), 'followerNumber'
-        //     ]
-        //   ]
-        // },
         {
           model: Models.Skill,
           attributes: [ 'skillName' ],
@@ -246,18 +188,10 @@ exports.showOtherProfile = async (req, res, next) => {
           through: { attributes: [] }
         }
       ]
-      // ,
-      // group: [
-      //   {
-      //     model: Models.User,
-      //     as: 'Followers'
-      //   },
-      //   {
-      //     model: Models.User,
-      //     as: 'Followings'
-      //   }
-      // ]
     });
+
+    user.dataValues.followerNumber = followerNumber;
+    user.dataValues.followingNumber = followingNumber;
 
     if (!user) {
       throw new Error("Error to create tuple");
