@@ -5,6 +5,7 @@ const controller = require('./project.controller');
 
 router.route('/')
   .get(controller.showProjectList);
+  //.post(controller.setProject);
 
 // router.route('/temp')
 //   .post(controller.setTempProject);

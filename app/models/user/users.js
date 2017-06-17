@@ -18,7 +18,7 @@ module.exports = (sequelize, DataType) => {
     userSecondJob: { type: DataType.STRING },
     userThirdJob: { type: DataType.STRING },
     introduction: { type: DataType.STRING , allowNull: false, defaultValue: '' },
-    portfolio: { type: DataType.STRING , allowNull: false, defaultValue: '' },
+    portfolio: { type: DataType.STRING },
     userImage: { type: DataType.STRING, allowNull: false },
 
     identityId: { type: DataType.INTEGER, allowNull: false, references: { model: Models.Identity, key: 'id' }},

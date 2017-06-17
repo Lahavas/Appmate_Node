@@ -48,6 +48,38 @@ exports.showProjectList = async (req, res, next) => {
   }
 };
 
+// exports.setProject = async (req, res, next) => {
+//   try {
+//     // User Authorization
+//     const myUserId = parseInt(req.headers.userid, 10);
+//     if (!myUserId) {
+//       return next(new Error('No myUserId'));
+//     }
+//
+//     if (req.body.projectId) {
+//
+//     }
+//
+//     const project = await Models.Project.findOrCreate({
+//
+//     })
+//
+//     if (!projects) {
+//       return next(new Error('Error to create tuple'));
+//     }
+//
+//     return res.status(201).json({
+//       'msg': 'success',
+//       'data': {
+//         'projects': projects
+//       }
+//     });
+//   }
+//   catch (error) {
+//     return next(error);
+//   }
+// };
+
 exports.showProject = async (req, res, next) => {
   try {
     // User Authorization
