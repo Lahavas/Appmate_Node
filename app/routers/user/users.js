@@ -37,6 +37,9 @@ router.route('/project')
 router.route('/profile/:userId')
   .get(controller.showOtherProfile);
 
+router.route('/project/:userId')
+  .get(controller.showOtherProject)  
+
 // router.route('/following/:userId')
 //   .post(controller.setFollowing);
 

@@ -152,50 +152,158 @@ exports.showMyProject = async (req, res, next) => {
       return next(new Error('No myUserId'));
     }
 
-    const user = await Models.User.findOne({
+    const projectRunning = await Models.Project.findAll({
       where: {
-        id: myUserId
+        projectState: '진행'
       },
       attributes: [
-        'userNickname', 'userFirstJob', 'userSecondJob', 'userThirdJob',
-        'introduction', 'portfolio', 'userImage',
-        'highfiveNumber', 'passNumber'
+        'id', 'projectName', 'projectImage',
+        [
+          Models.sequelize.fn('DATEDIFF',
+            Models.sequelize.col('projectClosingDate'),
+            Models.sequelize.col('projectOpeningDate')
+          ), 'dDay'
+        ]
       ],
       include: [
         {
-          model: Models.Skill,
-          attributes: [ 'skillName' ],
-          through: { attributes: [] }
+          model: Models.User,
+          as: 'Owner',
+          attributes: [ 'id', 'userNickname', 'userImage' ]
         },
         {
-          model: Models.Skill,
-          as: 'WantedSkills',
-          attributes: [ 'skillName' ],
-          through: { attributes: [] }
-        },
-        {
-          model: Models.ProjectField,
-          attributes: [ 'projectFieldName' ],
-          through: { attributes: [] }
-        },
-        {
-          model: Models.Identity,
-          attributes: [ 'identityName' ]
+          model: Models.User,
+          as: 'Runners',
+          attributes: [],
+          where: {
+            id: myUserId
+          }
         }
       ]
     });
 
-    user.dataValues.followerNumber = followerNumber;
-    user.dataValues.followingNumber = followingNumber;
+    const projectComplete = await Models.Project.findAll({
+      where: {
+        projectState: '완료'
+      },
+      attributes: [
+        'id', 'projectName', 'projectImage',
+        [
+          Models.sequelize.fn('DATEDIFF',
+            Models.sequelize.col('projectClosingDate'),
+            Models.sequelize.col('projectOpeningDate')
+          ), 'dDay'
+        ]
+      ],
+      include: [
+        {
+          model: Models.User,
+          as: 'Owner',
+          attributes: [ 'id', 'userNickname', 'userImage' ]
+        },
+        {
+          model: Models.User,
+          as: 'Runners',
+          attributes: [],
+          where: {
+            id: myUserId
+          }
+        }
+      ]
+    });
 
-    if (!user) {
+    const projectApply = await Models.Project.findAll({
+      where: {
+        projectState: '모집'
+      },
+      attributes: [
+        'id', 'projectName', 'projectImage',
+        [
+          Models.sequelize.fn('DATEDIFF',
+            Models.sequelize.col('projectClosingDate'),
+            Models.sequelize.col('projectOpeningDate')
+          ), 'dDay'
+        ]
+      ],
+      include: [
+        {
+          model: Models.User,
+          as: 'Owner',
+          attributes: [ 'id', 'userNickname', 'userImage' ]
+        },
+        {
+          model: Models.User,
+          as: 'Applicants',
+          attributes: [],
+          where: {
+            id: myUserId
+          }
+        }
+      ]
+    });
+
+    const projectRecruit = await Models.Project.findAll({
+      where: {
+        projectState: '모집'
+      },
+      attributes: [
+        'id', 'projectName', 'projectImage',
+        [
+          Models.sequelize.fn('DATEDIFF',
+            Models.sequelize.col('projectClosingDate'),
+            Models.sequelize.col('projectOpeningDate')
+          ), 'dDay'
+        ]
+      ],
+      include: [
+        {
+          model: Models.User,
+          as: 'Owner',
+          attributes: [ 'id', 'userNickname', 'userImage' ],
+          where: {
+            id: myUserId
+          }
+        }
+      ]
+    });
+
+    const projectTemp = await Models.Project.findAll({
+      where: {
+        projectState: '임시'
+      },
+      attributes: [
+        'id', 'projectName', 'projectImage',
+        [
+          Models.sequelize.fn('DATEDIFF',
+            Models.sequelize.col('projectClosingDate'),
+            Models.sequelize.col('projectOpeningDate')
+          ), 'dDay'
+        ]
+      ],
+      include: [
+        {
+          model: Models.User,
+          as: 'Owner',
+          attributes: [ 'id', 'userNickname', 'userImage' ],
+          where: {
+            id: myUserId
+          }
+        }
+      ]
+    });
+
+    if (!projectRunning || !projectComplete || !projectApply || !projectRecruit || !projectTemp) {
       throw new Error("Error to create tuple");
     }
 
     return res.status(201).json({
       'msg': 'success',
       'data': {
-        'user': user
+        'projectRunning': projectRunning,
+        'projectComplete': projectComplete,
+        'projectApply': projectApply,
+        'projectRecruit': projectRecruit,
+        'projectTemp': projectTemp
       }
     });
   }
@@ -277,6 +385,179 @@ exports.showOtherProfile = async (req, res, next) => {
       'msg': 'success',
       'data': {
         'user': user
+      }
+    });
+  }
+  catch (error) {
+    return next(error);
+  }
+};
+
+exports.showOtherProject = async (req, res, next) => {
+  try {
+    // User Authorization
+    const myUserId = parseInt(req.headers.userid, 10);
+    if (!myUserId) {
+      return next(new Error('No myUserId'));
+    }
+
+    const userId = parseInt(req.params.userId, 10);
+    if (!userId) {
+      return next(new Error('No userId'));
+    }
+
+    const projectRunning = await Models.Project.findAll({
+      where: {
+        projectState: '진행'
+      },
+      attributes: [
+        'id', 'projectName', 'projectImage',
+        [
+          Models.sequelize.fn('DATEDIFF',
+            Models.sequelize.col('projectClosingDate'),
+            Models.sequelize.col('projectOpeningDate')
+          ), 'dDay'
+        ]
+      ],
+      include: [
+        {
+          model: Models.User,
+          as: 'Owner',
+          attributes: [ 'id', 'userNickname', 'userImage' ]
+        },
+        {
+          model: Models.User,
+          as: 'Runners',
+          attributes: [],
+          where: {
+            id: userId
+          }
+        }
+      ]
+    });
+
+    const projectComplete = await Models.Project.findAll({
+      where: {
+        projectState: '완료'
+      },
+      attributes: [
+        'id', 'projectName', 'projectImage',
+        [
+          Models.sequelize.fn('DATEDIFF',
+            Models.sequelize.col('projectClosingDate'),
+            Models.sequelize.col('projectOpeningDate')
+          ), 'dDay'
+        ]
+      ],
+      include: [
+        {
+          model: Models.User,
+          as: 'Owner',
+          attributes: [ 'id', 'userNickname', 'userImage' ]
+        },
+        {
+          model: Models.User,
+          as: 'Runners',
+          attributes: [],
+          where: {
+            id: userId
+          }
+        }
+      ]
+    });
+
+    const projectApply = await Models.Project.findAll({
+      where: {
+        projectState: '모집'
+      },
+      attributes: [
+        'id', 'projectName', 'projectImage',
+        [
+          Models.sequelize.fn('DATEDIFF',
+            Models.sequelize.col('projectClosingDate'),
+            Models.sequelize.col('projectOpeningDate')
+          ), 'dDay'
+        ]
+      ],
+      include: [
+        {
+          model: Models.User,
+          as: 'Owner',
+          attributes: [ 'id', 'userNickname', 'userImage' ]
+        },
+        {
+          model: Models.User,
+          as: 'Applicants',
+          attributes: [],
+          where: {
+            id: userId
+          }
+        }
+      ]
+    });
+
+    const projectRecruit = await Models.Project.findAll({
+      where: {
+        projectState: '모집'
+      },
+      attributes: [
+        'id', 'projectName', 'projectImage',
+        [
+          Models.sequelize.fn('DATEDIFF',
+            Models.sequelize.col('projectClosingDate'),
+            Models.sequelize.col('projectOpeningDate')
+          ), 'dDay'
+        ]
+      ],
+      include: [
+        {
+          model: Models.User,
+          as: 'Owner',
+          attributes: [ 'id', 'userNickname', 'userImage' ],
+          where: {
+            id: userId
+          }
+        }
+      ]
+    });
+
+    const projectTemp = await Models.Project.findAll({
+      where: {
+        projectState: '임시'
+      },
+      attributes: [
+        'id', 'projectName', 'projectImage',
+        [
+          Models.sequelize.fn('DATEDIFF',
+            Models.sequelize.col('projectClosingDate'),
+            Models.sequelize.col('projectOpeningDate')
+          ), 'dDay'
+        ]
+      ],
+      include: [
+        {
+          model: Models.User,
+          as: 'Owner',
+          attributes: [ 'id', 'userNickname', 'userImage' ],
+          where: {
+            id: userId
+          }
+        }
+      ]
+    });
+
+    if (!projectRunning || !projectComplete || !projectApply || !projectRecruit || !projectTemp) {
+      throw new Error("Error to create tuple");
+    }
+
+    return res.status(201).json({
+      'msg': 'success',
+      'data': {
+        'projectRunning': projectRunning,
+        'projectComplete': projectComplete,
+        'projectApply': projectApply,
+        'projectRecruit': projectRecruit,
+        'projectTemp': projectTemp
       }
     });
   }
