@@ -140,7 +140,7 @@ exports.setProject = async (req, res, next) => {
         projectState: req.body.projectState,
         isPass: req.body.isPass,
         projectOpeningDate: new Date(),
-        projectClosingDate: new Date(),
+        projectClosingDate: req.body.projectClosingDate,
         ownerId: myUserId
       });
 
