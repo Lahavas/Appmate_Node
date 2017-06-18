@@ -721,19 +721,19 @@ exports.setFollowing = async (req, res, next) => {
 
     const followerNumber = await Models.UserFollow.count({
       where: {
-        followerId: myUserId
+        followerId: userId
       }
     });
 
     const followingNumber = await Models.UserFollow.count({
       where: {
-        followingId: myUserId
+        followingId: userId
       }
     });
 
     const user = await Models.User.findOne({
       where: {
-        id: myUserId
+        id: userId
       },
       attributes: [
         'userNickname', 'userFirstJob', 'userSecondJob', 'userThirdJob',
@@ -915,6 +915,40 @@ exports.showOtherFollowers = async (req, res, next) => {
 //     return next(error);
 //   }
 // }
+
+exports.setHighfive = async (req, res, next) => {
+  try {
+    // User Authorization
+    const myUserId = parseInt(req.headers.userid, 10);
+    if (!myUserId) {
+      return next(new Error('No myUserId'));
+    }
+
+    const userId = parseInt(req.params.userId, 10);
+    if (!userId) {
+      return next(new Error('No userId'));
+    }
+
+    const userHighfive = await Models.UserHighfive.create({
+      userId: myUserId,
+      highfiveId: userId
+    });
+
+    const user = await Models.User.findById(myUserId);
+    user.increment('highfiveNumber');
+
+    if (!user) {
+      throw new Error("Error to create tuple");
+    }
+
+    return res.status(201).json({
+      'msg': 'success'
+    });
+  }
+  catch (error) {
+    return next(error);
+  }
+};
 
 exports.showUserList = async (req, res, next) => {
   try {
