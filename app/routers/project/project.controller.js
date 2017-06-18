@@ -178,6 +178,9 @@ exports.setProject = async (req, res, next) => {
       });
     }
 
+    console.log('wantedSkillArray', wantedSkillArray);
+    console.log('projectFieldArray', projectFieldArray);
+
     const projectWantedSkill = await Models.ProjectWantedSkill.bulkCreate(wantedSkillArray, {
       individualHooks: true
     });
