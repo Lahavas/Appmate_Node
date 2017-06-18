@@ -24,6 +24,9 @@ router.route('/:projectId/likes')
   .get(controller.showProjectLikes)
   .post(controller.setProjectLike);
 
+router.route('/:projectId/listlikes')
+  .post(controller.setProjectListLike);
+
 router.route('/:projectId/fields')
   .get(controller.showProjectFields);
 //

@@ -361,51 +361,6 @@ exports.setProjectLike = async (req, res, next) => {
       return next(new Error('Must true or false'))
     }
 
-    // 만약 프로젝트 목록에서 하나만 수정 안될거같으면 적용
-    // const projects = await Models.Project.findAll({
-    //   where: {
-    //     'ownerId': {
-    //       $not: myUserId
-    //     }
-    //   },
-    //   attributes: [
-    //     'id', 'projectName',
-    //     [
-    //       Models.sequelize.fn('DATEDIFF',
-    //         Models.sequelize.col('projectClosingDate'),
-    //         Models.sequelize.col('projectOpeningDate')
-    //       ), 'dDay'
-    //     ],
-    //     [
-    //       Models.sequelize.fn('COUNT',
-    //         Models.sequelize.col('Likes.id')
-    //       ), 'isLike'
-    //     ]
-    //   ],
-    //   include: [
-    //     {
-    //       model: Models.User,
-    //       as: 'Owner',
-    //       attributes: [ 'id', 'userNickname', 'userImage' ]
-    //     },
-    //     {
-    //       model: Models.User,
-    //       as: 'Likes',
-    //       attributes: [],
-    //       through: {
-    //         where: {
-    //           'likeUserid': myUserId
-    //         }
-    //       }
-    //     },
-    //     {
-    //       model: Models.ProjectBackground,
-    //       attributes: [ 'projectBackgroundImage' ]
-    //     }
-    //   ],
-    //   group: [ 'id' ]
-    // });
-
     const project = await Models.Project.findOne({
       where: {
         id: projectId
@@ -457,6 +412,101 @@ exports.setProjectLike = async (req, res, next) => {
       'msg': 'success',
       'data': {
         'project': project
+      }
+    });
+  }
+  catch (error) {
+    return next(error);
+  }
+};
+
+exports.setProjectListLike = async (req, res, next) => {
+  try {
+    // User Authorization
+    const myUserId = parseInt(req.headers.userid, 10);
+    if (!myUserId) {
+      return next(new Error('No myUserId'));
+    }
+
+    const projectId = parseInt(req.params.projectId, 10);
+    if (!projectId) {
+      return next(new Error('No projectId'));
+    }
+
+    if (req.body.check == 'true') {
+      const projectLike = await Models.ProjectLike.create({
+        projectId: projectId,
+        likeUserId: myUserId
+      });
+    } else if (req.body.check == 'false') {
+      const projectLike = await Models.ProjectLike.destroy({
+        where: {
+          $and: [
+            {
+              projectId: projectId
+            },
+            {
+              likeUserId: myUserId
+            }
+          ]
+        }
+      })
+    } else {
+      return next(new Error('Must true or false'))
+    }
+
+    const projects = await Models.Project.findAll({
+      where: {
+        'ownerId': {
+          $not: myUserId
+        }
+      },
+      attributes: [
+        'id', 'projectName',
+        [
+          Models.sequelize.fn('DATEDIFF',
+            Models.sequelize.col('projectClosingDate'),
+            Models.sequelize.col('projectOpeningDate')
+          ), 'dDay'
+        ],
+        [
+          Models.sequelize.fn('COUNT',
+            Models.sequelize.col('Likes.id')
+          ), 'isLike'
+        ]
+      ],
+      include: [
+        {
+          model: Models.User,
+          as: 'Owner',
+          attributes: [ 'id', 'userNickname', 'userImage' ]
+        },
+        {
+          model: Models.User,
+          as: 'Likes',
+          attributes: [],
+          through: {
+            where: {
+              'likeUserid': myUserId
+            }
+          }
+        },
+        {
+          model: Models.ProjectBackground,
+          attributes: [ 'projectBackgroundImage' ]
+        }
+      ],
+      group: [ 'id' ]
+    });
+
+    if (!projects) {
+      return next(new Error('Error to create tuple'));
+    }
+
+    return res.status(201).json({
+      'msg': 'success',
+      'data': {
+        'projects': projects
       }
     });
   }
