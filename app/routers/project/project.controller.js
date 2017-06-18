@@ -351,14 +351,53 @@ exports.setProjectLike = async (req, res, next) => {
       })
     }
 
-    const projects = await Models.Project.findAll({
+    // const projects = await Models.Project.findAll({
+    //   where: {
+    //     'ownerId': {
+    //       $not: myUserId
+    //     }
+    //   },
+    //   attributes: [
+    //     'id', 'projectName', 'projectImage',
+    //     [
+    //       Models.sequelize.fn('DATEDIFF',
+    //         Models.sequelize.col('projectClosingDate'),
+    //         Models.sequelize.col('projectOpeningDate')
+    //       ), 'dDay'
+    //     ],
+    //     [
+    //       Models.sequelize.fn('COUNT',
+    //         Models.sequelize.col('Likes.id')
+    //       ), 'isLike'
+    //     ]
+    //   ],
+    //   include: [
+    //     {
+    //       model: Models.User,
+    //       as: 'Owner',
+    //       attributes: [ 'id', 'userNickname', 'userImage' ]
+    //     },
+    //     {
+    //       model: Models.User,
+    //       as: 'Likes',
+    //       attributes: [],
+    //       through: {
+    //         where: {
+    //           'likeUserid': myUserId
+    //         }
+    //       }
+    //     }
+    //   ],
+    //   group: [ 'id' ]
+    // });
+
+    const project = await Models.Project.findOne({
       where: {
-        'ownerId': {
-          $not: myUserId
-        }
+        id: projectId
       },
       attributes: [
         'id', 'projectName', 'projectImage',
+        'projectDescription',
         [
           Models.sequelize.fn('DATEDIFF',
             Models.sequelize.col('projectClosingDate'),
@@ -383,7 +422,7 @@ exports.setProjectLike = async (req, res, next) => {
           attributes: [],
           through: {
             where: {
-              'likeUserid': myUserId
+              'likeUserId': myUserId
             }
           }
         }
@@ -391,14 +430,14 @@ exports.setProjectLike = async (req, res, next) => {
       group: [ 'id' ]
     });
 
-    if (!projects) {
+    if (!project) {
       return next(new Error('Error to create tuple'));
     }
 
     return res.status(201).json({
       'msg': 'success',
       'data': {
-        'projects': projects
+        'project': project
       }
     });
   }
