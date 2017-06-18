@@ -12,7 +12,11 @@ exports.showProjectList = async (req, res, next) => {
       where: {
         'ownerId': {
           $not: myUserId
-        }
+        },
+        'projectClosingDate': {
+          $gt: new Date()
+        },
+        'projectState': '모집'
       },
       attributes: [
         'id', 'projectName',
