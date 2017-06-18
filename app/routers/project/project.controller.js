@@ -91,6 +91,8 @@ exports.setProject = async (req, res, next) => {
     let projectId = 0;
     let project = 0;
 
+    console.log(req.body);
+
     const wantedSkillNames = req.body.wantedSkillNames;
     const projectFieldNames = req.body.projectFieldNames;
 
