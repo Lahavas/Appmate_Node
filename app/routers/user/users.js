@@ -40,8 +40,8 @@ router.route('/profile/:userId')
 router.route('/project/:userId')
   .get(controller.showOtherProject)
 
-// router.route('/following/:userId')
-//   .post(controller.setFollowing);
+router.route('/following/:userId')
+  .post(controller.setFollowing);
 
 // router.route('/badges/:userId')
 //   .get(controller.showOtherBadges);

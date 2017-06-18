@@ -684,6 +684,109 @@ exports.showOtherProject = async (req, res, next) => {
   }
 };
 
+exports.setFollowing = async (req, res, next) => {
+  try {
+    // User Authorization
+    const myUserId = parseInt(req.headers.userid, 10);
+    if (!myUserId) {
+      return next(new Error('No myUserId'));
+    }
+
+    const userId = parseInt(req.params.userId, 10);
+    if (!userId) {
+      return next(new Error('No userId'));
+    }
+
+    if (req.body.check == 'true') {
+      const userFollow = await Models.UserFollow.create({
+        followingId: myUserId,
+        followerId: userId
+      });
+    } else if (req.body.check == 'false') {
+      const userFollow = await Models.UserFollow.destroy({
+        where: {
+          $and: [
+            {
+              followingId: myUserId
+            },
+            {
+              followerId: userId
+            }
+          ]
+        }
+      });
+    } else {
+      return next(new Error('Must true or false'))
+    }
+
+    const followerNumber = await Models.UserFollow.count({
+      where: {
+        followerId: myUserId
+      }
+    });
+
+    const followingNumber = await Models.UserFollow.count({
+      where: {
+        followingId: myUserId
+      }
+    });
+
+    const user = await Models.User.findOne({
+      where: {
+        id: myUserId
+      },
+      attributes: [
+        'userNickname', 'userFirstJob', 'userSecondJob', 'userThirdJob',
+        'introduction', 'portfolio', 'userImage',
+        'highfiveNumber', 'passNumber'
+      ],
+      include: [
+        {
+          model: Models.Skill,
+          attributes: [ 'skillName' ],
+          through: { attributes: [] }
+        },
+        {
+          model: Models.Skill,
+          as: 'WantedSkills',
+          attributes: [ 'skillName' ],
+          through: { attributes: [] }
+        },
+        {
+          model: Models.ProjectField,
+          attributes: [ 'projectFieldName' ],
+          through: { attributes: [] }
+        },
+        {
+          model: Models.Identity,
+          attributes: [ 'identityName' ]
+        },
+        {
+          model: Models.UserPlace,
+          attributes: [ 'address' ]
+        }
+      ]
+    });
+
+    user.dataValues.followerNumber = followerNumber;
+    user.dataValues.followingNumber = followingNumber;
+
+    if (!user) {
+      throw new Error("Error to create tuple");
+    }
+
+    return res.status(201).json({
+      'msg': 'success',
+      'data': {
+        'user': user
+      }
+    });
+  }
+  catch (error) {
+    return next(error);
+  }
+};
+
 exports.showOtherFollowings = async (req, res, next) => {
   try {
     // User Authorization
@@ -728,7 +831,7 @@ exports.showOtherFollowings = async (req, res, next) => {
   }
 };
 
-exports.showMyFollowers = async (req, res, next) => {
+exports.showOtherFollowers = async (req, res, next) => {
   try {
     // User Authorization
     const myUserId = parseInt(req.headers.userid, 10);
