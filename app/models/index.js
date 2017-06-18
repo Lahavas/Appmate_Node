@@ -15,7 +15,8 @@ if (config.use_env_variable) {
     config.username,
     config.password, {
       'host': config.host,
-      'dialect': config.dialect
+      'dialect': config.dialect,
+      'logging': false
     });
 }
 

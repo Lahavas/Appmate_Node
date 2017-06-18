@@ -971,9 +971,11 @@ exports.showUserList = async (req, res, next) => {
     const longitude = myUserPoint[0].dataValues.coordinate.coordinates[0];
 
     const users = await Models.User.findAll({
-      // where: {
-      //
-      // },
+      where: {
+        id: {
+          $not: myUserId
+        }
+      },
       attributes: [
         'id', 'userNickname', 'userImage', 'userFirstJob',
         [

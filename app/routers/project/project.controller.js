@@ -53,6 +53,14 @@ exports.showProjectList = async (req, res, next) => {
           attributes: [ 'projectBackgroundImage' ]
         }
       ],
+      order: [
+        [
+          Models.sequelize.fn('DATEDIFF',
+            Models.sequelize.col('projectClosingDate'),
+            Models.sequelize.col('projectOpeningDate')
+          ) , 'ASC'
+        ]
+      ],
       group: [ 'id' ]
     });
 
