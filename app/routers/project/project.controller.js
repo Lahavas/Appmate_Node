@@ -15,7 +15,7 @@ exports.showProjectList = async (req, res, next) => {
         }
       },
       attributes: [
-        'id', 'projectName', 'projectImage',
+        'id', 'projectName',
         [
           Models.sequelize.fn('DATEDIFF',
             Models.sequelize.col('projectClosingDate'),
@@ -43,6 +43,10 @@ exports.showProjectList = async (req, res, next) => {
               'likeUserid': myUserId
             }
           }
+        },
+        {
+          model: Models.ProjectBackground,
+          attributes: [ 'projectBackgroundImage' ]
         }
       ],
       group: [ 'id' ]
@@ -120,7 +124,7 @@ exports.showProject = async (req, res, next) => {
         id: projectId
       },
       attributes: [
-        'id', 'projectName', 'projectImage',
+        'id', 'projectName',
         'projectDescription',
         [
           Models.sequelize.fn('DATEDIFF',
@@ -149,6 +153,10 @@ exports.showProject = async (req, res, next) => {
               'likeUserId': myUserId
             }
           }
+        },
+        {
+          model: Models.ProjectBackground,
+          attributes: [ 'projectBackgroundImage' ]
         }
       ],
       group: [ 'id' ]
@@ -336,7 +344,7 @@ exports.setProjectLike = async (req, res, next) => {
         projectId: projectId,
         likeUserId: myUserId
       });
-    } else {
+    } else if (req.body.check == 'false') {
       const projectLike = await Models.ProjectLike.destroy({
         where: {
           $and: [
@@ -349,8 +357,11 @@ exports.setProjectLike = async (req, res, next) => {
           ]
         }
       })
+    } else {
+      return next(new Error('Must true or false'))
     }
 
+    // 만약 프로젝트 목록에서 하나만 수정 안될거같으면 적용
     // const projects = await Models.Project.findAll({
     //   where: {
     //     'ownerId': {
@@ -358,7 +369,7 @@ exports.setProjectLike = async (req, res, next) => {
     //     }
     //   },
     //   attributes: [
-    //     'id', 'projectName', 'projectImage',
+    //     'id', 'projectName',
     //     [
     //       Models.sequelize.fn('DATEDIFF',
     //         Models.sequelize.col('projectClosingDate'),
@@ -386,6 +397,10 @@ exports.setProjectLike = async (req, res, next) => {
     //           'likeUserid': myUserId
     //         }
     //       }
+    //     },
+    //     {
+    //       model: Models.ProjectBackground,
+    //       attributes: [ 'projectBackgroundImage' ]
     //     }
     //   ],
     //   group: [ 'id' ]
@@ -396,7 +411,7 @@ exports.setProjectLike = async (req, res, next) => {
         id: projectId
       },
       attributes: [
-        'id', 'projectName', 'projectImage',
+        'id', 'projectName',
         'projectDescription',
         [
           Models.sequelize.fn('DATEDIFF',
@@ -425,6 +440,10 @@ exports.setProjectLike = async (req, res, next) => {
               'likeUserId': myUserId
             }
           }
+        },
+        {
+          model: Models.ProjectBackground,
+          attributes: [ 'projectBackgroundImage' ]
         }
       ],
       group: [ 'id' ]

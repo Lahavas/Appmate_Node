@@ -157,7 +157,7 @@ exports.showMyProject = async (req, res, next) => {
         projectState: '진행'
       },
       attributes: [
-        'id', 'projectName', 'projectImage',
+        'id', 'projectName',
         [
           Models.sequelize.fn('DATEDIFF',
             Models.sequelize.col('projectClosingDate'),
@@ -178,6 +178,10 @@ exports.showMyProject = async (req, res, next) => {
           where: {
             id: myUserId
           }
+        },
+        {
+          model: Models.ProjectBackground,
+          attributes: [ 'projectBackgroundImage' ]
         }
       ]
     });
@@ -187,7 +191,7 @@ exports.showMyProject = async (req, res, next) => {
         projectState: '완료'
       },
       attributes: [
-        'id', 'projectName', 'projectImage',
+        'id', 'projectName',
         [
           Models.sequelize.fn('DATEDIFF',
             Models.sequelize.col('projectClosingDate'),
@@ -208,6 +212,10 @@ exports.showMyProject = async (req, res, next) => {
           where: {
             id: myUserId
           }
+        },
+        {
+          model: Models.ProjectBackground,
+          attributes: [ 'projectBackgroundImage' ]
         }
       ]
     });
@@ -217,7 +225,7 @@ exports.showMyProject = async (req, res, next) => {
         projectState: '모집'
       },
       attributes: [
-        'id', 'projectName', 'projectImage',
+        'id', 'projectName',
         [
           Models.sequelize.fn('DATEDIFF',
             Models.sequelize.col('projectClosingDate'),
@@ -238,6 +246,10 @@ exports.showMyProject = async (req, res, next) => {
           where: {
             id: myUserId
           }
+        },
+        {
+          model: Models.ProjectBackground,
+          attributes: [ 'projectBackgroundImage' ]
         }
       ]
     });
@@ -247,7 +259,7 @@ exports.showMyProject = async (req, res, next) => {
         projectState: '모집'
       },
       attributes: [
-        'id', 'projectName', 'projectImage',
+        'id', 'projectName',
         [
           Models.sequelize.fn('DATEDIFF',
             Models.sequelize.col('projectClosingDate'),
@@ -263,6 +275,10 @@ exports.showMyProject = async (req, res, next) => {
           where: {
             id: myUserId
           }
+        },
+        {
+          model: Models.ProjectBackground,
+          attributes: [ 'projectBackgroundImage' ]
         }
       ]
     });
@@ -272,7 +288,7 @@ exports.showMyProject = async (req, res, next) => {
         projectState: '임시'
       },
       attributes: [
-        'id', 'projectName', 'projectImage',
+        'id', 'projectName',
         [
           Models.sequelize.fn('DATEDIFF',
             Models.sequelize.col('projectClosingDate'),
@@ -288,6 +304,10 @@ exports.showMyProject = async (req, res, next) => {
           where: {
             id: myUserId
           }
+        },
+        {
+          model: Models.ProjectBackground,
+          attributes: [ 'projectBackgroundImage' ]
         }
       ]
     });
@@ -411,7 +431,7 @@ exports.showOtherProject = async (req, res, next) => {
         projectState: '진행'
       },
       attributes: [
-        'id', 'projectName', 'projectImage',
+        'id', 'projectName',
         [
           Models.sequelize.fn('DATEDIFF',
             Models.sequelize.col('projectClosingDate'),
@@ -432,6 +452,10 @@ exports.showOtherProject = async (req, res, next) => {
           where: {
             id: userId
           }
+        },
+        {
+          model: Models.ProjectBackground,
+          attributes: [ 'projectBackgroundImage' ]
         }
       ]
     });
@@ -441,7 +465,7 @@ exports.showOtherProject = async (req, res, next) => {
         projectState: '완료'
       },
       attributes: [
-        'id', 'projectName', 'projectImage',
+        'id', 'projectName',
         [
           Models.sequelize.fn('DATEDIFF',
             Models.sequelize.col('projectClosingDate'),
@@ -462,6 +486,10 @@ exports.showOtherProject = async (req, res, next) => {
           where: {
             id: userId
           }
+        },
+        {
+          model: Models.ProjectBackground,
+          attributes: [ 'projectBackgroundImage' ]
         }
       ]
     });
@@ -471,7 +499,7 @@ exports.showOtherProject = async (req, res, next) => {
         projectState: '모집'
       },
       attributes: [
-        'id', 'projectName', 'projectImage',
+        'id', 'projectName',
         [
           Models.sequelize.fn('DATEDIFF',
             Models.sequelize.col('projectClosingDate'),
@@ -492,6 +520,10 @@ exports.showOtherProject = async (req, res, next) => {
           where: {
             id: userId
           }
+        },
+        {
+          model: Models.ProjectBackground,
+          attributes: [ 'projectBackgroundImage' ]
         }
       ]
     });
@@ -501,7 +533,7 @@ exports.showOtherProject = async (req, res, next) => {
         projectState: '모집'
       },
       attributes: [
-        'id', 'projectName', 'projectImage',
+        'id', 'projectName',
         [
           Models.sequelize.fn('DATEDIFF',
             Models.sequelize.col('projectClosingDate'),
@@ -517,6 +549,10 @@ exports.showOtherProject = async (req, res, next) => {
           where: {
             id: userId
           }
+        },
+        {
+          model: Models.ProjectBackground,
+          attributes: [ 'projectBackgroundImage' ]
         }
       ]
     });
@@ -526,7 +562,7 @@ exports.showOtherProject = async (req, res, next) => {
         projectState: '임시'
       },
       attributes: [
-        'id', 'projectName', 'projectImage',
+        'id', 'projectName',
         [
           Models.sequelize.fn('DATEDIFF',
             Models.sequelize.col('projectClosingDate'),
@@ -542,6 +578,10 @@ exports.showOtherProject = async (req, res, next) => {
           where: {
             id: userId
           }
+        },
+        {
+          model: Models.ProjectBackground,
+          attributes: [ 'projectBackgroundImage' ]
         }
       ]
     });
