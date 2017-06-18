@@ -19,12 +19,12 @@ router.route('/project')
 // router.route('/badges')
 //   .get(controller.showMybadges);
 //
-// router.route('/followings')
-//   .get(controller.showMyFollowings);
-//
-// router.route('/followers')
-//   .get(controller.showMyFollowers);
-//
+router.route('/followings')
+  .get(controller.showMyFollowings);
+
+router.route('/followers')
+  .get(controller.showMyFollowers);
+
 // router.route('/highfives')
 //   .get(controller.showMyHighfiveUsers);
 //
@@ -45,6 +45,12 @@ router.route('/project/:userId')
 
 // router.route('/badges/:userId')
 //   .get(controller.showOtherBadges);
+
+router.route('/followings/:userId')
+  .get(controller.showOtherFollowings);
+
+router.route('/followers/:userId')
+  .get(controller.showOtherFollowers);
 
 // router.route('/highfive/:userId')
 //   .post(controller.setHighfive);

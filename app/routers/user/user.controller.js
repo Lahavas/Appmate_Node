@@ -332,6 +332,84 @@ exports.showMyProject = async (req, res, next) => {
   }
 };
 
+exports.showMyFollowings = async (req, res, next) => {
+  try {
+    // User Authorization
+    const myUserId = parseInt(req.headers.userid, 10);
+    if (!myUserId) {
+      return next(new Error('No myUserId'));
+    }
+
+    const users = await Models.User.findAll({
+      where: {
+        id: myUserId
+      },
+      attributes: [],
+      include: [
+        {
+          model: Models.User,
+          as: 'Followers',
+          attributes: [ 'id', 'userNickname', 'userImage' ],
+          through: { attributes: [] }
+        }
+      ]
+    });
+
+    if (!users) {
+      throw new Error("Error to create tuple");
+    }
+
+    return res.status(201).json({
+      'msg': 'success',
+      'data': {
+        'users': users
+      }
+    });
+  }
+  catch (error) {
+    return next(error);
+  }
+};
+
+exports.showMyFollowers = async (req, res, next) => {
+  try {
+    // User Authorization
+    const myUserId = parseInt(req.headers.userid, 10);
+    if (!myUserId) {
+      return next(new Error('No myUserId'));
+    }
+
+    const users = await Models.User.findAll({
+      where: {
+        id: myUserId
+      },
+      attributes: [],
+      include: [
+        {
+          model: Models.User,
+          as: 'Followings',
+          attributes: [ 'id', 'userNickname', 'userImage' ],
+          through: { attributes: [] }
+        }
+      ]
+    });
+
+    if (!users) {
+      throw new Error("Error to create tuple");
+    }
+
+    return res.status(201).json({
+      'msg': 'success',
+      'data': {
+        'users': users
+      }
+    });
+  }
+  catch (error) {
+    return next(error);
+  }
+};
+
 exports.showOtherProfile = async (req, res, next) => {
   try {
     // User Authorization
@@ -598,6 +676,94 @@ exports.showOtherProject = async (req, res, next) => {
         'projectApply': projectApply,
         'projectRecruit': projectRecruit,
         'projectTemp': projectTemp
+      }
+    });
+  }
+  catch (error) {
+    return next(error);
+  }
+};
+
+exports.showOtherFollowings = async (req, res, next) => {
+  try {
+    // User Authorization
+    const myUserId = parseInt(req.headers.userid, 10);
+    if (!myUserId) {
+      return next(new Error('No myUserId'));
+    }
+
+    const userId = parseInt(req.params.userId, 10);
+    if (!userId) {
+      return next(new Error('No userId'));
+    }
+
+    const users = await Models.User.findAll({
+      where: {
+        id: userId
+      },
+      attributes: [],
+      include: [
+        {
+          model: Models.User,
+          as: 'Followers',
+          attributes: [ 'id', 'userNickname', 'userImage' ],
+          through: { attributes: [] }
+        }
+      ]
+    });
+
+    if (!users) {
+      throw new Error("Error to create tuple");
+    }
+
+    return res.status(201).json({
+      'msg': 'success',
+      'data': {
+        'users': users
+      }
+    });
+  }
+  catch (error) {
+    return next(error);
+  }
+};
+
+exports.showMyFollowers = async (req, res, next) => {
+  try {
+    // User Authorization
+    const myUserId = parseInt(req.headers.userid, 10);
+    if (!myUserId) {
+      return next(new Error('No myUserId'));
+    }
+
+    const userId = parseInt(req.params.userId, 10);
+    if (!userId) {
+      return next(new Error('No userId'));
+    }
+
+    const users = await Models.User.findAll({
+      where: {
+        id: userId
+      },
+      attributes: [],
+      include: [
+        {
+          model: Models.User,
+          as: 'Followings',
+          attributes: [ 'id', 'userNickname', 'userImage' ],
+          through: { attributes: [] }
+        }
+      ]
+    });
+
+    if (!users) {
+      throw new Error("Error to create tuple");
+    }
+
+    return res.status(201).json({
+      'msg': 'success',
+      'data': {
+        'users': users
       }
     });
   }
