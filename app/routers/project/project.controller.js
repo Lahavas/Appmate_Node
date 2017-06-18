@@ -91,8 +91,8 @@ exports.setProject = async (req, res, next) => {
     let projectId = 0;
     let project = 0;
 
-    const wantedSkillNames = JSON.parse(req.body.wantedSkillNames);
-    const projectFieldNames = JSON.parse(req.body.projectFieldNames);
+    const wantedSkillNames = req.body.wantedSkillNames;
+    const projectFieldNames = req.body.projectFieldNames;
 
     if (req.body.projectId) {
 

@@ -875,47 +875,6 @@ exports.showOtherFollowers = async (req, res, next) => {
   }
 };
 
-// exports.showOtherBadges = async (req, res, next) => {
-//   try {
-//     // User Authorization
-//     const myUserId = parseInt(req.headers.userid, 10);
-//     if (!myUserId) {
-//       return next(new Error('No myUserId'));
-//     }
-//
-//     const id = parseInt(req.params.userId, 10);
-//     if (!id) {
-//       throw new Error("No id");
-//     }
-//
-//     const user = await Models.User.findOne({
-//       where: {
-//         id: id
-//       },
-//       attributes: [
-//         'id'
-//       ],
-//       include: [{
-//         model: Models.UserBadge
-//       }]
-//     });
-//
-//     if (!user) {
-//       throw new Error("Error to create tuple");
-//     }
-//
-//     return res.status(201).json({
-//       'msg': 'success',
-//       'data': {
-//         'user': user
-//       }
-//     });
-//   }
-//   catch (error) {
-//     return next(error);
-//   }
-// }
-
 exports.setHighfive = async (req, res, next) => {
   try {
     // User Authorization
@@ -1003,7 +962,7 @@ exports.showUserList = async (req, res, next) => {
       },
       order: [
         [
-          Models.sequelize.fn( 'ST_Distance',
+          Models.sequelize.fn( 'ST_Distance_Sphere',
             Models.sequelize.fn('ST_GeomFromText', `POINT(${longitude} ${latitude})`),
             Models.sequelize.col( 'UserPlace.coordinate' )
           ) , 'ASC'
