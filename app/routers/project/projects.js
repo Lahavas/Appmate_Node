@@ -4,12 +4,9 @@ const router = express.Router();
 const controller = require('./project.controller');
 
 router.route('/')
-  .get(controller.showProjectList);
-  //.post(controller.setProject);
+  .get(controller.showProjectList)
+  .post(controller.setProject);
 
-// router.route('/temp')
-//   .post(controller.setTempProject);
-//
 router.route('/:projectId')
   .get(controller.showProject);
 //   .post(controller.updateProject);

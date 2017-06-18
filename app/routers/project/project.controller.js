@@ -68,43 +68,122 @@ exports.showProjectList = async (req, res, next) => {
   }
 };
 
-// exports.setProject = async (req, res, next) => {
-//   try {
-//     // User Authorization
-//     const myUserId = parseInt(req.headers.userid, 10);
-//     if (!myUserId) {
-//       return next(new Error('No myUserId'));
-//     }
-//
-//     if (req.body.projectId) {
-//       const project = await Models.Project.Update({
-//         where: {
-//           id: req.body.projectId
-//         },
-//
-//
-//       })
-//     }
-//
-//     const project = await Models.Project.findOrCreate({
-//
-//     })
-//
-//     if (!projects) {
-//       return next(new Error('Error to create tuple'));
-//     }
-//
-//     return res.status(201).json({
-//       'msg': 'success',
-//       'data': {
-//         'projects': projects
-//       }
-//     });
-//   }
-//   catch (error) {
-//     return next(error);
-//   }
-// };
+exports.setProject = async (req, res, next) => {
+  try {
+    // User Authorization
+    const myUserId = parseInt(req.headers.userid, 10);
+    if (!myUserId) {
+      return next(new Error('No myUserId'));
+    }
+
+    let projectId = 0;
+    let project = 0;
+
+    const wantedSkillNames = JSON.parse(req.body.wantedSkillNames);
+    const projectFieldNames = JSON.parse(req.body.projectFieldNames);
+
+    if (req.body.projectId) {
+
+      projectId = req.body.projectId;
+
+      project = await Models.Project.update(
+        {
+          projectName: req.body.projectName,
+          projectBackgroundId: req.body.projectBackgroundId,
+          projectMemberNumber: req.body.projectMemberNumber,
+          projectDescription: req.body.projectDescription,
+          projectState: req.body.projectState,
+          isPass: req.body.isPass,
+          projectClosingDate: req.body.projectClosingDate,
+          ownerId: myUserId
+        },
+        {
+          where: {
+            id: projectId
+          }
+        }
+      );
+
+      await Models.ProjectWantedSkill.destroy({
+        where: {
+          projectId: projectId
+        }
+      });
+
+      await Models.ProjectAppliedField.destroy({
+        where: {
+          projectId: projectId
+        }
+      });
+
+    } else {
+
+      project = await Models.Project.create({
+        projectName: req.body.projectName,
+        projectBackgroundId: req.body.projectBackgroundId,
+        projectMemberNumber: req.body.projectMemberNumber,
+        projectDescription: req.body.projectDescription,
+        projectState: req.body.projectState,
+        isPass: req.body.isPass,
+        projectOpeningDate: new Date(),
+        projectClosingDate: req.body.projectClosingDate,
+        ownerId: myUserId
+      });
+
+      projectId = project.id;
+
+    }
+
+    const wantedSkillArray = [];
+    for (let wantedSkillName of wantedSkillNames) {
+
+      const skill = await Models.Skill.findOne({
+        where: {
+          skillName: wantedSkillName
+        }
+      });
+
+      wantedSkillArray.push({
+        projectId: projectId,
+        wantedSkillId: skill.id
+      });
+    }
+
+    const projectFieldArray = [];
+    for (let projectFieldName of projectFieldNames) {
+
+      const field = await Models.ProjectField.findOne({
+        where: {
+          projectFieldName: projectFieldName
+        }
+      });
+
+      projectFieldArray.push({
+        projectId: projectId,
+        projectFieldId: field.id
+      });
+    }
+
+    const projectWantedSkill = await Models.ProjectWantedSkill.bulkCreate(wantedSkillArray, {
+      individualHooks: true
+    });
+
+    const projectAppliedField = await Models.ProjectAppliedField.bulkCreate(projectFieldArray, {
+      individualHooks: true
+    });
+
+    if (!project || !projectWantedSkill || !projectAppliedField) {
+      return next(new Error('Error to create tuple'));
+    }
+
+    return res.status(201).json({
+      'msg': 'success'
+    });
+  }
+  catch (error) {
+    return next(error);
+  }
+};
 
 exports.showProject = async (req, res, next) => {
   try {
