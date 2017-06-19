@@ -31,8 +31,8 @@ router.route('/:projectId/apply')
   .post(controller.applyProject);
 
 router.route('/:projectId/recruit')
-  .get(controller.showRecruitMember);
-  //.post(controller.setRecruitProject);
+  .get(controller.showRecruitMember)
+  .post(controller.setRecruitProject);
 
 router.route('/:projectId/comment')
   .get(controller.showCommentList)

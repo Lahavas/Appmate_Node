@@ -806,53 +806,53 @@ exports.showRecruitMember = async (req, res, next) => {
   }
 };
 
-// exports.setRecruitProject = async (req, res, next) => {
-//   try {
-//     // User Authorization
-//     const myUserId = parseInt(req.headers.userid, 10);
-//     if (!myUserId) {
-//       return next(new Error('No myUserId'));
-//     }
-//
-//     const projectId = parseInt(req.params.projectId, 10);
-//     if (!projectId) {
-//       return next(new Error('No projectId'));
-//     }
-//
-//     const recruitUserIds = req.body.recruitUserIds;
-//
-//     const recruitUserArray = [];
-//     for (let recruitUserId of recruitUserIds) {
-//       recruitUserArray.push({
-//         projectId: projectId,
-//         runnerId: recruitUserId
-//       });
-//     }
-//
-//     const projectRunner = await Models.ProjectRunner.bulkCreate(recruitUserArray, {
-//       individualHooks: true
-//     });
-//
-//     const project = await Models.Project.update({
-//       {
-//         projectState: '진행'
-//       },
-//       {
-//         where: {
-//           id: projectId
-//         }
-//       }
-//     });
-//
-//     if (!project || !projectRunner) {
-//       return next(new Error("Error to create tuple"));
-//     }
-//
-//     return res.status(201).json({
-//       'msg': 'success'
-//     });
-//   }
-//   catch (error) {
-//     return next(error);
-//   }
-// };
+exports.setRecruitProject = async (req, res, next) => {
+  try {
+    // User Authorization
+    const myUserId = parseInt(req.headers.userid, 10);
+    if (!myUserId) {
+      return next(new Error('No myUserId'));
+    }
+
+    const projectId = parseInt(req.params.projectId, 10);
+    if (!projectId) {
+      return next(new Error('No projectId'));
+    }
+
+    const recruitUserIds = JSON.parse(req.body.recruitUserIds);
+
+    const recruitUserArray = [];
+    for (let recruitUserId of recruitUserIds) {
+      recruitUserArray.push({
+        projectId: projectId,
+        runnerId: recruitUserId
+      });
+    }
+
+    const projectRunner = await Models.ProjectRunner.bulkCreate(recruitUserArray, {
+      individualHooks: true
+    });
+
+    const project = await Models.Project.update(
+      {
+        projectState: '진행'
+      },
+      {
+        where: {
+          id: projectId
+        }
+      }
+    );
+
+    if (!project || !projectRunner) {
+      return next(new Error("Error to create tuple"));
+    }
+
+    return res.status(201).json({
+      'msg': 'success'
+    });
+  }
+  catch (error) {
+    return next(error);
+  }
+};
