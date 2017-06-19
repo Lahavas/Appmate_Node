@@ -1074,10 +1074,11 @@ exports.showUserMapList = async (req, res, next) => {
       having: {
         userId: {
           $not: myUserId
-        },
-        distance: {
-          between: [0, 20000]
         }
+        // ,
+        // distance: {
+        //   between: [0, 20000]
+        // }
       },
       order: [
         [
@@ -1164,10 +1165,11 @@ exports.showUserMapListWithPoint = async (req, res, next) => {
       having: {
         userId: {
           $not: myUserId
-        },
-        distance: {
-          between: [0, 20000]
         }
+        // ,
+        // distance: {
+        //   between: [0, 20000]
+        // }
       },
       order: [
         [
