@@ -2,47 +2,78 @@ const Models = require('../../models');
 
 exports.login = async (req, res, next) => {
   try {
-    const body = req.body;
 
-    const skillIds = JSON.parse(req.body.skillIds);
-    const wantedSkillIds = JSON.parse(req.body.wantedSkillIds);
-    const projectFieldIds = JSON.parse(req.body.projectFieldIds);
+    const userFirstJob = req.body.userFirstJob? req.body.userFirstJob : null;
+    const userSecondJob = req.body.userSecondJob? req.body.userSecondJob : null;
+    const userThirdJob = req.body.userThirdJob? req.body.userThirdJob : null;
 
-    const transaction = await Models.sequelize.transaction();
+    const user = await Models.User.create({
+      userNickname: req.body.userNickname,
+      userFirstJob: userFirstJob,
+      userSecondJob: userSecondJob,
+      userThirdJob: userThirdJob,
+      introduction: req.body.introduction,
+      portfolio: req.body.portfolio,
+      userImage: req.body.userImage,
+      identityId: req.body.identityId,
+    });
 
-    const user = await Models.User.create(body);
+    const skillNames = req.body.skillNames;
+    const wantedSkillNames = req.body.wantedSkillNames;
+    const projectFieldNames = req.body.projectFieldNames;
 
     const skillArray = [];
-    for (let skillId of skillIds) {
+    for (let skillName of skillNames) {
+
+      const skill = await Models.Skill.findOne({
+        where: {
+          skillName: skillName
+        }
+      });
+
       skillArray.push({
         userId: user.id,
-        skillId: skillId
-      })
+        skillId: skill.id
+      });
+    }
+
+    const wantedSkillArray = [];
+    for (let wantedSkillName of wantedSkillNames) {
+
+      const skill = await Models.Skill.findOne({
+        where: {
+          skillName: wantedSkillName
+        }
+      });
+
+      wantedSkillArray.push({
+        userId: user.id,
+        wantedSkillId: skill.id
+      });
+    }
+
+    const projectFieldArray = [];
+    for (let projectFieldName of projectFieldNames) {
+
+      const field = await Models.ProjectField.findOne({
+        where: {
+          projectFieldName: projectFieldName
+        }
+      });
+
+      projectFieldArray.push({
+        userId: user.id,
+        projectFieldId: field.id
+      });
     }
 
     const userSkill = await Models.UserSkill.bulkCreate(skillArray, {
       individualHooks: true
     });
 
-    const wantedSkillArray = [];
-    for (let wantedSkillId of wantedSkillIds) {
-      wantedSkillArray.push({
-        userId: user.id,
-        wantedSkillId: wantedSkillId
-      })
-    }
-
     const userWantedSkill = await Models.UserWantedSkill.bulkCreate(wantedSkillArray, {
       individualHooks: true
     });
-
-    const projectFieldArray = [];
-    for (let projectFieldId of projectFieldIds) {
-      projectFieldArray.push({
-        userId: user.id,
-        projectFieldId: projectFieldId
-      })
-    }
 
     const userProjectField = await Models.UserProjectField.bulkCreate(projectFieldArray, {
       individualHooks: true
@@ -55,10 +86,7 @@ exports.login = async (req, res, next) => {
     return res.status(201).json({
       'msg': 'success',
       'data': {
-        'user': user,
-        'userSkill': userSkill,
-        'userWantedSkill': userWantedSkill,
-        'userProjectField': userProjectField
+        'id': user.id
       }
     });
   }
