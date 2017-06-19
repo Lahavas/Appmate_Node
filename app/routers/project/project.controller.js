@@ -446,73 +446,70 @@ exports.setProjectLike = async (req, res, next) => {
       return next(new Error('Must true or false'))
     }
 
-    const project = await Models.Project.findOne({
-      where: {
-        id: projectId
-      },
-      attributes: [
-        'id', 'projectName',
-        'projectDescription',
-        [
-          Models.sequelize.fn('DATEDIFF',
-            Models.sequelize.col('projectClosingDate'),
-            Models.sequelize.col('projectOpeningDate')
-          ), 'dDay'
-        ],
-        [
-          Models.sequelize.fn('COUNT',
-            Models.sequelize.col('Likes.id')
-          ), 'isLike'
-        ],
-        [
-          Models.sequelize.fn('COUNT',
-            Models.sequelize.col('Applicants.id')
-          ), 'isApplied'
-        ]
-      ],
-      include: [
-        {
-          model: Models.User,
-          as: 'Owner',
-          attributes: [ 'id', 'userNickname', 'userImage' ]
-        },
-        {
-          model: Models.User,
-          as: 'Likes',
-          attributes: [],
-          through: {
-            where: {
-              'likeUserId': myUserId
-            }
-          }
-        },
-        {
-          model: Models.User,
-          as: 'Applicants',
-          attributes: [],
-          through: {
-            where: {
-              'applicantId': myUserId
-            }
-          }
-        },
-        {
-          model: Models.ProjectBackground,
-          attributes: [ 'projectBackgroundImage' ]
-        }
-      ],
-      group: [ 'id' ]
-    });
-
-    if (!project) {
-      return next(new Error('Error to create tuple'));
-    }
+    // const project = await Models.Project.findOne({
+    //   where: {
+    //     id: projectId
+    //   },
+    //   attributes: [
+    //     'id', 'projectName',
+    //     'projectDescription',
+    //     [
+    //       Models.sequelize.fn('DATEDIFF',
+    //         Models.sequelize.col('projectClosingDate'),
+    //         Models.sequelize.col('projectOpeningDate')
+    //       ), 'dDay'
+    //     ],
+    //     [
+    //       Models.sequelize.fn('COUNT',
+    //         Models.sequelize.col('Likes.id')
+    //       ), 'isLike'
+    //     ],
+    //     [
+    //       Models.sequelize.fn('COUNT',
+    //         Models.sequelize.col('Applicants.id')
+    //       ), 'isApplied'
+    //     ]
+    //   ],
+    //   include: [
+    //     {
+    //       model: Models.User,
+    //       as: 'Owner',
+    //       attributes: [ 'id', 'userNickname', 'userImage' ]
+    //     },
+    //     {
+    //       model: Models.User,
+    //       as: 'Likes',
+    //       attributes: [],
+    //       through: {
+    //         where: {
+    //           'likeUserId': myUserId
+    //         }
+    //       }
+    //     },
+    //     {
+    //       model: Models.User,
+    //       as: 'Applicants',
+    //       attributes: [],
+    //       through: {
+    //         where: {
+    //           'applicantId': myUserId
+    //         }
+    //       }
+    //     },
+    //     {
+    //       model: Models.ProjectBackground,
+    //       attributes: [ 'projectBackgroundImage' ]
+    //     }
+    //   ],
+    //   group: [ 'id' ]
+    // });
+    //
+    // if (!project) {
+    //   return next(new Error('Error to create tuple'));
+    // }
 
     return res.status(201).json({
-      'msg': 'success',
-      'data': {
-        'project': project
-      }
+      'msg': 'success'
     });
   }
   catch (error) {
@@ -555,59 +552,56 @@ exports.setProjectListLike = async (req, res, next) => {
       return next(new Error('Must true or false'))
     }
 
-    const projects = await Models.Project.findAll({
-      where: {
-        'ownerId': {
-          $not: myUserId
-        }
-      },
-      attributes: [
-        'id', 'projectName',
-        [
-          Models.sequelize.fn('DATEDIFF',
-            Models.sequelize.col('projectClosingDate'),
-            Models.sequelize.col('projectOpeningDate')
-          ), 'dDay'
-        ],
-        [
-          Models.sequelize.fn('COUNT',
-            Models.sequelize.col('Likes.id')
-          ), 'isLike'
-        ]
-      ],
-      include: [
-        {
-          model: Models.User,
-          as: 'Owner',
-          attributes: [ 'id', 'userNickname', 'userImage' ]
-        },
-        {
-          model: Models.User,
-          as: 'Likes',
-          attributes: [],
-          through: {
-            where: {
-              'likeUserid': myUserId
-            }
-          }
-        },
-        {
-          model: Models.ProjectBackground,
-          attributes: [ 'projectBackgroundImage' ]
-        }
-      ],
-      group: [ 'id' ]
-    });
-
-    if (!projects) {
-      return next(new Error('Error to create tuple'));
-    }
+    // const projects = await Models.Project.findAll({
+    //   where: {
+    //     'ownerId': {
+    //       $not: myUserId
+    //     }
+    //   },
+    //   attributes: [
+    //     'id', 'projectName',
+    //     [
+    //       Models.sequelize.fn('DATEDIFF',
+    //         Models.sequelize.col('projectClosingDate'),
+    //         Models.sequelize.col('projectOpeningDate')
+    //       ), 'dDay'
+    //     ],
+    //     [
+    //       Models.sequelize.fn('COUNT',
+    //         Models.sequelize.col('Likes.id')
+    //       ), 'isLike'
+    //     ]
+    //   ],
+    //   include: [
+    //     {
+    //       model: Models.User,
+    //       as: 'Owner',
+    //       attributes: [ 'id', 'userNickname', 'userImage' ]
+    //     },
+    //     {
+    //       model: Models.User,
+    //       as: 'Likes',
+    //       attributes: [],
+    //       through: {
+    //         where: {
+    //           'likeUserid': myUserId
+    //         }
+    //       }
+    //     },
+    //     {
+    //       model: Models.ProjectBackground,
+    //       attributes: [ 'projectBackgroundImage' ]
+    //     }
+    //   ],
+    //   group: [ 'id' ]
+    // });
+    //
+    // if (!projects) {
+    //   return next(new Error('Error to create tuple'));
+    // }
 
     return res.status(201).json({
-      'msg': 'success',
-      'data': {
-        'projects': projects
-      }
+      'msg': 'success'
     });
   }
   catch (error) {
