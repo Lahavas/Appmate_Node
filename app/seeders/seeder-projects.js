@@ -108,6 +108,14 @@ module.exports = {
         projectMemberNumber: 9, projectDescription: '테스트 프로젝트 28입니다',
         projectState: '완료', isPass: false,
         projectClosingDate: '2017-06-29', createdAt: new Date(), updatedAt: new Date()},
+      { id: 27, ownerId: 49, projectName: '테스트 프로젝트 29', projectBackgroundId: 6,
+        projectMemberNumber: 9, projectDescription: '테스트 프로젝트 28입니다',
+        projectState: '완료', isPass: false,
+        projectClosingDate: '2017-06-29', createdAt: new Date(), updatedAt: new Date()},
+      { id: 28, ownerId: 49, projectName: '테스트 프로젝트 30', projectBackgroundId: 6,
+        projectMemberNumber: 9, projectDescription: '테스트 프로젝트 28입니다',
+        projectState: '완료', isPass: false,
+        projectClosingDate: '2017-06-29', createdAt: new Date(), updatedAt: new Date()},
     ], {});
   },
 

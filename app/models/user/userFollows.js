@@ -9,8 +9,8 @@ module.exports = (sequelize, DataType) => {
 
   UserFollow.associate = db => {
     // N:M Association, Many follow users belongs to many following users
-    db.User.belongsToMany(db.User, { as: 'Followers', through: db.UserFollow, foreignKey: 'followingId' });
-    db.User.belongsToMany(db.User, { as: 'Followings', through: db.UserFollow, foreignKey: 'followerId' });
+    db.User.belongsToMany(db.User, { as: 'Followings', through: db.UserFollow, foreignKey: 'followingId' });
+    db.User.belongsToMany(db.User, { as: 'Followers', through: db.UserFollow, foreignKey: 'followerId' });
   };
 
   return UserFollow;

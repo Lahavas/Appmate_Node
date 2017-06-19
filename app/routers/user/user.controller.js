@@ -401,7 +401,7 @@ exports.showMyFollowings = async (req, res, next) => {
       include: [
         {
           model: Models.User,
-          as: 'Followers',
+          as: 'Followings',
           attributes: [ 'id', 'userNickname', 'userImage' ],
           through: { attributes: [] }
         }
@@ -440,7 +440,7 @@ exports.showMyFollowers = async (req, res, next) => {
       include: [
         {
           model: Models.User,
-          as: 'Followings',
+          as: 'Followers',
           attributes: [ 'id', 'userNickname', 'userImage' ],
           through: { attributes: [] }
         }
@@ -919,7 +919,7 @@ exports.showOtherFollowings = async (req, res, next) => {
       include: [
         {
           model: Models.User,
-          as: 'Followers',
+          as: 'Followings',
           attributes: [ 'id', 'userNickname', 'userImage' ],
           through: { attributes: [] }
         }
@@ -963,7 +963,7 @@ exports.showOtherFollowers = async (req, res, next) => {
       include: [
         {
           model: Models.User,
-          as: 'Followings',
+          as: 'Followers',
           attributes: [ 'id', 'userNickname', 'userImage' ],
           through: { attributes: [] }
         }
