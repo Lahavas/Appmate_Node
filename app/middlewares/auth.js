@@ -6,8 +6,7 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 
 const path = require('path');
 
-const env = process.env.NODE_ENV || 'development';
-const authConfig = require(__dirname + '../config/auth.json')[env];
+const authConfig = require('../config/auth.json');
 
 const opts = {
     jwtFromRequest: ExtractJwt.fromHeader('authorization'),
