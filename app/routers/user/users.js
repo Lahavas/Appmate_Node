@@ -49,8 +49,8 @@ router.route('/followings/:userId')
 router.route('/followers/:userId')
   .get(controller.showOtherFollowers);
 
-router.route('/highfive/:userId')
-  .post(controller.setHighfive);
+// router.route('/highfive/:userId')
+//   .post(controller.setHighfive);
 
 router.route('/userList')
   .get(controller.showUserList);

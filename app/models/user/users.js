@@ -29,7 +29,8 @@ module.exports = (sequelize, DataType) => {
     // 회사 인중 구현시
     // corpAuthFlag: { type: DataType.BOOLEAN, allowNull: false, defaultValue: false },
 
-    highfiveNumber: { type: DataType.INTEGER, allowNull: false, defaultValue: 0 },
+    // 하이파이브 구현시
+    // highfiveNumber: { type: DataType.INTEGER, allowNull: false, defaultValue: 0 },
     PassNumber: { type: DataType.INTEGER, allowNull: false, defaultValue: 0 }
   });
 

@@ -88,65 +88,23 @@ exports.setProject = async (req, res, next) => {
       return next(new Error('No myUserId'));
     }
 
-    let projectId = 0;
-    let project = 0;
-
-    console.log(req.body);
-
     const wantedSkillNames = req.body.wantedSkillNames;
     const projectFieldNames = req.body.projectFieldNames;
 
-    if (req.body.projectId) {
 
-      projectId = req.body.projectId;
+    const project = await Models.Project.create({
+      projectName: req.body.projectName,
+      projectBackgroundId: req.body.projectBackgroundId,
+      projectMemberNumber: req.body.projectMemberNumber,
+      projectDescription: req.body.projectDescription,
+      projectState: req.body.projectState,
+      isPass: req.body.isPass,
+      projectOpeningDate: new Date(),
+      projectClosingDate: req.body.projectClosingDate,
+      ownerId: myUserId
+    });
 
-      project = await Models.Project.update(
-        {
-          projectName: req.body.projectName,
-          projectBackgroundId: req.body.projectBackgroundId,
-          projectMemberNumber: req.body.projectMemberNumber,
-          projectDescription: req.body.projectDescription,
-          projectState: req.body.projectState,
-          isPass: req.body.isPass,
-          projectClosingDate: req.body.projectClosingDate,
-          ownerId: myUserId
-        },
-        {
-          where: {
-            id: projectId
-          }
-        }
-      );
-
-      await Models.ProjectWantedSkill.destroy({
-        where: {
-          projectId: projectId
-        }
-      });
-
-      await Models.ProjectAppliedField.destroy({
-        where: {
-          projectId: projectId
-        }
-      });
-
-    } else {
-
-      project = await Models.Project.create({
-        projectName: req.body.projectName,
-        projectBackgroundId: req.body.projectBackgroundId,
-        projectMemberNumber: req.body.projectMemberNumber,
-        projectDescription: req.body.projectDescription,
-        projectState: req.body.projectState,
-        isPass: req.body.isPass,
-        projectOpeningDate: new Date(),
-        projectClosingDate: req.body.projectClosingDate,
-        ownerId: myUserId
-      });
-
-      projectId = project.id;
-
-    }
+    const projectId = project.id;
 
     const wantedSkillArray = [];
     for (let wantedSkillName of wantedSkillNames) {
@@ -658,6 +616,115 @@ exports.showProjectFields = async (req, res, next) => {
       'msg': 'success',
       'data': {
         'fields': fields
+      }
+    });
+  }
+  catch (error) {
+    return next(error);
+  }
+};
+
+exports.applyProject = async (req, res, next) => {
+  try {
+    // User Authorization
+    const myUserId = parseInt(req.headers.userid, 10);
+    if (!myUserId) {
+      return next(new Error('No myUserId'));
+    }
+
+    const projectId = parseInt(req.params.projectId, 10);
+    if (!projectId) {
+      return next(new Error('No projectId'));
+    }
+
+    if (req.body.check == 'true') {
+      const projectApply = await Models.ProjectApply.create({
+        projectId: projectId,
+        applicantId: myUserId
+      });
+    } else if (req.body.check == 'false') {
+      const projectApply = await Models.ProjectApply.destroy({
+        where: {
+          $and: [
+            {
+              projectId: projectId
+            },
+            {
+              applicantId: myUserId
+            }
+          ]
+        }
+      })
+    } else {
+      return next(new Error('Must true or false'))
+    }
+
+    const project = await Models.Project.findOne({
+      where: {
+        id: projectId
+      },
+      attributes: [
+        'id', 'projectName',
+        'projectDescription',
+        [
+          Models.sequelize.fn('DATEDIFF',
+            Models.sequelize.col('projectClosingDate'),
+            Models.sequelize.col('projectOpeningDate')
+          ), 'dDay'
+        ],
+        [
+          Models.sequelize.fn('COUNT',
+            Models.sequelize.col('Likes.id')
+          ), 'isLike'
+        ],
+        [
+          Models.sequelize.fn('COUNT',
+            Models.sequelize.col('Applicants.id')
+          ), 'isApplied'
+        ]
+      ],
+      include: [
+        {
+          model: Models.User,
+          as: 'Owner',
+          attributes: [ 'id', 'userNickname', 'userImage' ]
+        },
+        {
+          model: Models.User,
+          as: 'Likes',
+          attributes: [],
+          through: {
+            where: {
+              'likeUserId': myUserId
+            }
+          }
+        },
+        {
+          model: Models.User,
+          as: 'Applicants',
+          attributes: [],
+          through: {
+            where: {
+              'applicantId': myUserId
+            }
+          }
+        },
+        {
+          model: Models.ProjectBackground,
+          attributes: [ 'projectBackgroundImage' ]
+        }
+      ],
+      group: [ 'id' ]
+    });
+
+    if (!project) {
+      return next(new Error('Error to create tuple'));
+    }
+
+    return res.status(201).json({
+      'msg': 'success',
+      'data': {
+        'project': project
       }
     });
   }

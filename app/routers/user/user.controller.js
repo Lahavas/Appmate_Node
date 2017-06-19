@@ -283,36 +283,7 @@ exports.showMyProject = async (req, res, next) => {
       ]
     });
 
-    const projectTemp = await Models.Project.findAll({
-      where: {
-        projectState: '임시'
-      },
-      attributes: [
-        'id', 'projectName',
-        [
-          Models.sequelize.fn('DATEDIFF',
-            Models.sequelize.col('projectClosingDate'),
-            Models.sequelize.col('projectOpeningDate')
-          ), 'dDay'
-        ]
-      ],
-      include: [
-        {
-          model: Models.User,
-          as: 'Owner',
-          attributes: [ 'id', 'userNickname', 'userImage' ],
-          where: {
-            id: myUserId
-          }
-        },
-        {
-          model: Models.ProjectBackground,
-          attributes: [ 'projectBackgroundImage' ]
-        }
-      ]
-    });
-
-    if (!projectRunning || !projectComplete || !projectApply || !projectRecruit || !projectTemp) {
+    if (!projectRunning || !projectComplete || !projectApply || !projectRecruit) {
       throw new Error("Error to create tuple");
     }
 
@@ -322,8 +293,7 @@ exports.showMyProject = async (req, res, next) => {
         'projectRunning': projectRunning,
         'projectComplete': projectComplete,
         'projectApply': projectApply,
-        'projectRecruit': projectRecruit,
-        'projectTemp': projectTemp
+        'projectRecruit': projectRecruit
       }
     });
   }
@@ -635,36 +605,36 @@ exports.showOtherProject = async (req, res, next) => {
       ]
     });
 
-    const projectTemp = await Models.Project.findAll({
-      where: {
-        projectState: '임시'
-      },
-      attributes: [
-        'id', 'projectName',
-        [
-          Models.sequelize.fn('DATEDIFF',
-            Models.sequelize.col('projectClosingDate'),
-            Models.sequelize.col('projectOpeningDate')
-          ), 'dDay'
-        ]
-      ],
-      include: [
-        {
-          model: Models.User,
-          as: 'Owner',
-          attributes: [ 'id', 'userNickname', 'userImage' ],
-          where: {
-            id: userId
-          }
-        },
-        {
-          model: Models.ProjectBackground,
-          attributes: [ 'projectBackgroundImage' ]
-        }
-      ]
-    });
+    // const projectTemp = await Models.Project.findAll({
+    //   where: {
+    //     projectState: '임시'
+    //   },
+    //   attributes: [
+    //     'id', 'projectName',
+    //     [
+    //       Models.sequelize.fn('DATEDIFF',
+    //         Models.sequelize.col('projectClosingDate'),
+    //         Models.sequelize.col('projectOpeningDate')
+    //       ), 'dDay'
+    //     ]
+    //   ],
+    //   include: [
+    //     {
+    //       model: Models.User,
+    //       as: 'Owner',
+    //       attributes: [ 'id', 'userNickname', 'userImage' ],
+    //       where: {
+    //         id: userId
+    //       }
+    //     },
+    //     {
+    //       model: Models.ProjectBackground,
+    //       attributes: [ 'projectBackgroundImage' ]
+    //     }
+    //   ]
+    // });
 
-    if (!projectRunning || !projectComplete || !projectApply || !projectRecruit || !projectTemp) {
+    if (!projectRunning || !projectComplete || !projectApply || !projectRecruit) {
       throw new Error("Error to create tuple");
     }
 
@@ -674,8 +644,7 @@ exports.showOtherProject = async (req, res, next) => {
         'projectRunning': projectRunning,
         'projectComplete': projectComplete,
         'projectApply': projectApply,
-        'projectRecruit': projectRecruit,
-        'projectTemp': projectTemp
+        'projectRecruit': projectRecruit
       }
     });
   }
@@ -875,39 +844,39 @@ exports.showOtherFollowers = async (req, res, next) => {
   }
 };
 
-exports.setHighfive = async (req, res, next) => {
-  try {
-    // User Authorization
-    const myUserId = parseInt(req.headers.userid, 10);
-    if (!myUserId) {
-      return next(new Error('No myUserId'));
-    }
-
-    const userId = parseInt(req.params.userId, 10);
-    if (!userId) {
-      return next(new Error('No userId'));
-    }
-
-    const userHighfive = await Models.UserHighfive.create({
-      userId: myUserId,
-      highfiveId: userId
-    });
-
-    const user = await Models.User.findById(myUserId);
-    user.increment('highfiveNumber');
-
-    if (!user) {
-      throw new Error("Error to create tuple");
-    }
-
-    return res.status(201).json({
-      'msg': 'success'
-    });
-  }
-  catch (error) {
-    return next(error);
-  }
-};
+// exports.setHighfive = async (req, res, next) => {
+//   try {
+//     // User Authorization
+//     const myUserId = parseInt(req.headers.userid, 10);
+//     if (!myUserId) {
+//       return next(new Error('No myUserId'));
+//     }
+//
+//     const userId = parseInt(req.params.userId, 10);
+//     if (!userId) {
+//       return next(new Error('No userId'));
+//     }
+//
+//     const userHighfive = await Models.UserHighfive.create({
+//       userId: myUserId,
+//       highfiveId: userId
+//     });
+//
+//     const user = await Models.User.findById(myUserId);
+//     user.increment('highfiveNumber');
+//
+//     if (!user) {
+//       throw new Error("Error to create tuple");
+//     }
+//
+//     return res.status(201).json({
+//       'msg': 'success'
+//     });
+//   }
+//   catch (error) {
+//     return next(error);
+//   }
+// };
 
 exports.showUserList = async (req, res, next) => {
   try {
