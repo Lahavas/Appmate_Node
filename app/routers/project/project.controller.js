@@ -88,8 +88,8 @@ exports.setProject = async (req, res, next) => {
       return next(new Error('No myUserId'));
     }
 
-    const wantedSkillNames = JSON.parse(req.body.wantedSkillNames);
-    const projectFieldNames = JSON.parse(req.body.projectFieldNames);
+    const wantedSkillNames = req.body.wantedSkillNames;
+    const projectFieldNames = req.body.projectFieldNames;
 
     const project = await Models.Project.create({
       projectName: req.body.projectName,
