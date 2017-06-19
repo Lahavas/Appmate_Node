@@ -495,7 +495,12 @@ exports.showOtherProfile = async (req, res, next) => {
       attributes: [
         'userNickname', 'userFirstJob', 'userSecondJob', 'userThirdJob',
         'introduction', 'portfolio', 'userImage',
-        'highfiveNumber', 'passNumber'
+        'highfiveNumber', 'passNumber',
+        [
+          Models.sequelize.fn('COUNT',
+            Models.sequelize.col('Followings.id')
+          ), 'isFollow'
+        ]
       ],
       include: [
         {
@@ -521,8 +526,19 @@ exports.showOtherProfile = async (req, res, next) => {
         {
           model: Models.UserPlace,
           attributes: [ 'address' ]
-        }
-      ]
+        },
+        {
+          model: Models.User,
+          as: 'Followings',
+          attributes: [ 'id' ],
+          through: {
+            where: {
+              'followingId': myUserId
+            }
+          }
+        },
+      ],
+      group: [ 'Skills.id', 'WantedSkills.id', 'ProjectFields.id', 'UserPlace.id' ]
     });
 
     user.dataValues.followerNumber = followerNumber;
