@@ -1178,6 +1178,7 @@ exports.showUserMapListWithPoint = async (req, res, next) => {
     const longitude = req.body.longitude;
 
     console.log(latitude);
+    console.log(longitude);
 
     const users = await Models.User.findAll({
       where: {
