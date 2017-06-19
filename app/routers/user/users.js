@@ -9,12 +9,15 @@ const controller = require('./user.controller');
 // router.route('/login')
 //   .post(upload.single('userImage'), controller.login);
 
+router.route('/verify')
+  .post(controller.verifyNickname);
+
 router.route('/profile')
-  .get(controller.showMyProfile)
+  .get(controller.showMyProfile);
 //   .post(controller.updateMyProfile);
 
 router.route('/project')
-  .get(controller.showMyProject)
+  .get(controller.showMyProject);
 
 // router.route('/badges')
 //   .get(controller.showMybadges);
@@ -35,7 +38,7 @@ router.route('/profile/:userId')
   .get(controller.showOtherProfile);
 
 router.route('/project/:userId')
-  .get(controller.showOtherProject)
+  .get(controller.showOtherProject);
 
 router.route('/following/:userId')
   .post(controller.setFollowing);

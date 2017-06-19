@@ -68,6 +68,31 @@ exports.login = async (req, res, next) => {
   }
 };
 
+exports.verifyNickname = async (req, res, next) => {
+  try {
+    const userNickname = req.body.userNickname;
+
+    const user = await Models.User.findOne({
+      where: {
+        userNickname : userNickname
+      }
+    });
+
+    if (!user) {
+      return res.status(201).json({
+        'msg': 'failure'
+      });
+    }
+
+    return res.status(201).json({
+      'msg': 'success'
+    });
+  }
+  catch (error) {
+    return next(error);
+  }
+};
+
 exports.showMyProfile = async (req, res, next) => {
   try {
     // User Authorization
