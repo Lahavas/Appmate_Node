@@ -283,7 +283,36 @@ exports.showMyProject = async (req, res, next) => {
       ]
     });
 
-    if (!projectRunning || !projectComplete || !projectApply || !projectRecruit) {
+    const projectLike = await Models.Project.findAll({
+      where: {
+        projectState: '모집'
+      },
+      attributes: [
+        'id', 'projectName',
+        [
+          Models.sequelize.fn('DATEDIFF',
+            Models.sequelize.col('projectClosingDate'),
+            Models.sequelize.col('projectOpeningDate')
+          ), 'dDay'
+        ]
+      ],
+      include: [
+        {
+          model: Models.User,
+          as: 'Likes',
+          attributes: [],
+          where: {
+            id: myUserId
+          }
+        },
+        {
+          model: Models.ProjectBackground,
+          attributes: [ 'projectBackgroundImage' ]
+        }
+      ]
+    });
+
+    if (!projectRunning || !projectComplete || !projectApply || !projectRecruit || !projectLike) {
       throw new Error("Error to create tuple");
     }
 
@@ -293,7 +322,8 @@ exports.showMyProject = async (req, res, next) => {
         'projectRunning': projectRunning,
         'projectComplete': projectComplete,
         'projectApply': projectApply,
-        'projectRecruit': projectRecruit
+        'projectRecruit': projectRecruit,
+        'projectLike': projectLike
       }
     });
   }
@@ -634,7 +664,36 @@ exports.showOtherProject = async (req, res, next) => {
     //   ]
     // });
 
-    if (!projectRunning || !projectComplete || !projectApply || !projectRecruit) {
+    const projectLike = await Models.Project.findAll({
+      where: {
+        projectState: '모집'
+      },
+      attributes: [
+        'id', 'projectName',
+        [
+          Models.sequelize.fn('DATEDIFF',
+            Models.sequelize.col('projectClosingDate'),
+            Models.sequelize.col('projectOpeningDate')
+          ), 'dDay'
+        ]
+      ],
+      include: [
+        {
+          model: Models.User,
+          as: 'Likes',
+          attributes: [],
+          where: {
+            id: userId
+          }
+        },
+        {
+          model: Models.ProjectBackground,
+          attributes: [ 'projectBackgroundImage' ]
+        }
+      ]
+    });
+
+    if (!projectRunning || !projectComplete || !projectApply || !projectRecruit || !projectLike) {
       throw new Error("Error to create tuple");
     }
 
@@ -644,7 +703,8 @@ exports.showOtherProject = async (req, res, next) => {
         'projectRunning': projectRunning,
         'projectComplete': projectComplete,
         'projectApply': projectApply,
-        'projectRecruit': projectRecruit
+        'projectRecruit': projectRecruit,
+        'projectLike': projectLike
       }
     });
   }

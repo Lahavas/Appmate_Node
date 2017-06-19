@@ -16,7 +16,7 @@ router.route('/:projectId')
 //
 // router.route('/:projectId/applicants')
 //   .get(controller.showProjectApplicants);
-//
+
 router.route('/:projectId/likes')
   .get(controller.showProjectLikes)
   .post(controller.setProjectLike);
@@ -32,7 +32,7 @@ router.route('/:projectId/apply')
 
 router.route('/:projectId/recruit')
   .get(controller.showRecruitMember);
-  //.post(controller.recruitProject);
+  //.post(controller.setRecruitProject);
 
 router.route('/:projectId/comment')
   .get(controller.showCommentList)
