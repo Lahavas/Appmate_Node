@@ -2,7 +2,7 @@ const express = require('express');
 
 const bodyParser = require('body-parser');
 
-// const passport = require('passport');
+const auth = require('./middlewares/auth')();
 
 const projects = require('./routers/project/projects');
 const users = require('./routers/user/users');
@@ -14,7 +14,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// app.use(passport.initialize());
+app.use(auth.initialize());
 
 app.use('/users', users);
 app.use('/projects', projects);
