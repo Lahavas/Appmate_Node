@@ -329,7 +329,17 @@ exports.setProjectComment = async (req, res, next) => {
         projectId: projectId
       },
       attributes: [
-        'commentContents'
+        'commentContents',
+        [
+          Models.sequelize.fn('DATEDIFF',
+            new Date(), Models.sequelize.col('ProjectComment.createdAt')
+          ), 'dateDiff'
+        ],
+        [
+          Models.sequelize.fn('TIMEDIFF',
+            new Date(), Models.sequelize.col('ProjectComment.createdAt')
+          ), 'timeDiff'
+        ]
       ],
       include: [
         {
