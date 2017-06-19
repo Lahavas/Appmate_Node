@@ -819,7 +819,7 @@ exports.setRecruitProject = async (req, res, next) => {
       return next(new Error('No projectId'));
     }
 
-    const recruitUserIds = JSON.parse(req.body.recruitUserIds);
+    const recruitUserIds = req.body.recruitUserIds;
 
     const recruitUserArray = [];
     for (let recruitUserId of recruitUserIds) {
