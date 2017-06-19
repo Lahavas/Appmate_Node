@@ -985,3 +985,88 @@ exports.showUserList = async (req, res, next) => {
     return next(error);
   }
 }
+
+exports.showUserMapList = async (req, res, next) => {
+  try {
+    // User Authorization
+    const myUserId = parseInt(req.headers.userid, 10);
+    if (!myUserId) {
+      return next(new Error('No myUserId'));
+    }
+
+    const myUserPoint = await Models.UserPlace.findAll({
+      where: {
+        userId: myUserId
+      },
+      attributes: [
+        'coordinate'
+      ]
+    });
+
+    const latitude = myUserPoint[0].dataValues.coordinate.coordinates[1];
+    const longitude = myUserPoint[0].dataValues.coordinate.coordinates[0];
+
+    const users = await Models.User.findAll({
+      where: {
+        id: {
+          $not: myUserId
+        }
+      },
+      attributes: [
+        'id', 'userNickname', 'userImage', 'userFirstJob',
+        [
+          Models.sequelize.fn( 'AsText',
+            Models.sequelize.col( 'UserPlace.coordinate' )
+          ), 'point'
+        ],
+        [
+          Models.sequelize.fn( 'ST_Distance_Sphere',
+            Models.sequelize.fn('ST_GeomFromText', `POINT(${longitude} ${latitude})`),
+            Models.sequelize.col( 'UserPlace.coordinate' )
+          ), 'distance'
+        ]
+      ],
+      include: [
+        {
+          model: Models.Skill,
+          attributes: [ 'skillName' ],
+          through: { attributes: [] }
+        },
+        {
+          model: Models.UserPlace,
+          attributes: []
+        }
+      ],
+      having: {
+        userId: {
+          $not: myUserId
+        },
+        distance: {
+          between: [0, 20000]
+        }
+      },
+      order: [
+        [
+          Models.sequelize.fn( 'ST_Distance_Sphere',
+            Models.sequelize.fn('ST_GeomFromText', `POINT(${longitude} ${latitude})`),
+            Models.sequelize.col( 'UserPlace.coordinate' )
+          ) , 'ASC'
+        ]
+      ]
+    });
+
+    if (!users) {
+      throw new Error("Error to create tuple");
+    }
+
+    return res.status(201).json({
+      'msg': 'success',
+      'data': {
+        'users': users
+      }
+    });
+  }
+  catch (error) {
+    return next(error);
+  }
+}

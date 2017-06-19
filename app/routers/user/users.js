@@ -55,4 +55,7 @@ router.route('/highfive/:userId')
 router.route('/userList')
   .get(controller.showUserList);
 
+  router.route('/userMapList')
+    .get(controller.showUserMapList);  
+
 module.exports = router;
