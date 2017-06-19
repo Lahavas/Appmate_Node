@@ -817,67 +817,80 @@ exports.setFollowing = async (req, res, next) => {
       return next(new Error('Must true or false'))
     }
 
-    const followerNumber = await Models.UserFollow.count({
-      where: {
-        followerId: userId
-      }
-    });
-
-    const followingNumber = await Models.UserFollow.count({
-      where: {
-        followingId: userId
-      }
-    });
-
-    const user = await Models.User.findOne({
-      where: {
-        id: userId
-      },
-      attributes: [
-        'userNickname', 'userFirstJob', 'userSecondJob', 'userThirdJob',
-        'introduction', 'portfolio', 'userImage',
-        'highfiveNumber', 'passNumber'
-      ],
-      include: [
-        {
-          model: Models.Skill,
-          attributes: [ 'skillName' ],
-          through: { attributes: [] }
-        },
-        {
-          model: Models.Skill,
-          as: 'WantedSkills',
-          attributes: [ 'skillName' ],
-          through: { attributes: [] }
-        },
-        {
-          model: Models.ProjectField,
-          attributes: [ 'projectFieldName' ],
-          through: { attributes: [] }
-        },
-        {
-          model: Models.Identity,
-          attributes: [ 'identityName' ]
-        },
-        {
-          model: Models.UserPlace,
-          attributes: [ 'address' ]
-        }
-      ]
-    });
-
-    user.dataValues.followerNumber = followerNumber;
-    user.dataValues.followingNumber = followingNumber;
-
-    if (!user) {
-      throw new Error("Error to create tuple");
-    }
+    // const followerNumber = await Models.UserFollow.count({
+    //   where: {
+    //     followerId: userId
+    //   }
+    // });
+    //
+    // const followingNumber = await Models.UserFollow.count({
+    //   where: {
+    //     followingId: userId
+    //   }
+    // });
+    //
+    // const user = await Models.User.findOne({
+    //   where: {
+    //     id: userId
+    //   },
+    //   attributes: [
+    //     'userNickname', 'userFirstJob', 'userSecondJob', 'userThirdJob',
+    //     'introduction', 'portfolio', 'userImage',
+    //     'highfiveNumber', 'passNumber',
+    //     [
+    //       Models.sequelize.fn('COUNT',
+    //         Models.sequelize.col('Followings.id')
+    //       ), 'isFollow'
+    //     ]
+    //   ],
+    //   include: [
+    //     {
+    //       model: Models.Skill,
+    //       attributes: [ 'skillName' ],
+    //       through: { attributes: [] }
+    //     },
+    //     {
+    //       model: Models.Skill,
+    //       as: 'WantedSkills',
+    //       attributes: [ 'skillName' ],
+    //       through: { attributes: [] }
+    //     },
+    //     {
+    //       model: Models.ProjectField,
+    //       attributes: [ 'projectFieldName' ],
+    //       through: { attributes: [] }
+    //     },
+    //     {
+    //       model: Models.Identity,
+    //       attributes: [ 'identityName' ]
+    //     },
+    //     {
+    //       model: Models.UserPlace,
+    //       attributes: [ 'address' ]
+    //     },
+    //     {
+    //       model: Models.User,
+    //       as: 'Followings',
+    //       attributes: [ 'id' ],
+    //       through: {
+    //         where: {
+    //           'followingId': myUserId
+    //         }
+    //       }
+    //     },
+    //   ],
+    //   group: [ 'Skills.id', 'WantedSkills.id', 'ProjectFields.id', 'UserPlace.id' ]
+    // });
+    //
+    // user.dataValues.followerNumber = followerNumber;
+    // user.dataValues.followingNumber = followingNumber;
+    //
+    // if (!user) {
+    //   throw new Error("Error to create tuple");
+    // }
 
     return res.status(201).json({
-      'msg': 'success',
-      'data': {
-        'user': user
-      }
+      'msg': 'success'
     });
   }
   catch (error) {
