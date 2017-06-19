@@ -72,7 +72,13 @@ module.exports = {
       { id: 67, projectId: 17, likeUserId: 11, createdAt: new Date(), updatedAt: new Date()},
       { id: 68, projectId: 17, likeUserId: 17, createdAt: new Date(), updatedAt: new Date()},
       { id: 69, projectId: 19, likeUserId: 22, createdAt: new Date(), updatedAt: new Date()},
-      { id: 70, projectId: 20, likeUserId: 49, createdAt: new Date(), updatedAt: new Date()}
+      { id: 70, projectId: 20, likeUserId: 49, createdAt: new Date(), updatedAt: new Date()},
+      { id: 71, projectId: 8, likeUserId: 30, createdAt: new Date(), updatedAt: new Date()},
+      { id: 72, projectId: 9, likeUserId: 30, createdAt: new Date(), updatedAt: new Date()},
+      { id: 73, projectId: 10, likeUserId: 30, createdAt: new Date(), updatedAt: new Date()},
+      { id: 74, projectId: 11, likeUserId: 30, createdAt: new Date(), updatedAt: new Date()},
+      { id: 75, projectId: 12, likeUserId: 30, createdAt: new Date(), updatedAt: new Date()},
+      { id: 76, projectId: 13, likeUserId: 30, createdAt: new Date(), updatedAt: new Date()}
     ], {});
   },
 

@@ -1091,7 +1091,6 @@ exports.showUserMapList = async (req, res, next) => {
     const latitude = myUserPoint[0].dataValues.coordinate.coordinates[1];
     const longitude = myUserPoint[0].dataValues.coordinate.coordinates[0];
 
-
     const users = await Models.User.findAll({
       where: {
         id: {

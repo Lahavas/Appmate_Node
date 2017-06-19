@@ -43,7 +43,13 @@ module.exports = {
       { id: 38, projectId: 16, applicantId: 2, createdAt: new Date(), updatedAt: new Date()},
       { id: 39, projectId: 16, applicantId: 3, createdAt: new Date(), updatedAt: new Date()},
       { id: 40, projectId: 16, applicantId: 4, createdAt: new Date(), updatedAt: new Date()},
-      { id: 41, projectId: 18, applicantId: 4, createdAt: new Date(), updatedAt: new Date()}
+      { id: 41, projectId: 18, applicantId: 4, createdAt: new Date(), updatedAt: new Date()},
+      { id: 42, projectId: 2, applicantId: 30, createdAt: new Date(), updatedAt: new Date()},
+      { id: 43, projectId: 3, applicantId: 30, createdAt: new Date(), updatedAt: new Date()},
+      { id: 44, projectId: 4, applicantId: 30, createdAt: new Date(), updatedAt: new Date()},
+      { id: 45, projectId: 5, applicantId: 30, createdAt: new Date(), updatedAt: new Date()},
+      { id: 46, projectId: 6, applicantId: 30, createdAt: new Date(), updatedAt: new Date()},
+      { id: 47, projectId: 7, applicantId: 30, createdAt: new Date(), updatedAt: new Date()}
     ], {});
   },
 
