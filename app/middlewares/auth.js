@@ -4,7 +4,10 @@ const passport = require('passport');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 
-const authConfig = require('../config/auth.json');
+const path = require('path');
+
+const env = process.env.NODE_ENV || 'development';
+const authConfig = require(__dirname + '../config/auth.json')[env];
 
 const opts = {
     jwtFromRequest: ExtractJwt.fromHeader('authorization'),

@@ -7,7 +7,7 @@
 const app = require('../app');
 const debug = require('debug')('appmate:server');
 const http = require('http');
-const models = require('../models');
+const Models = require('../models');
 
 /**
  * Get port from environment and store in Express.
@@ -26,7 +26,7 @@ const server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  * sync() will create all table if they doesn't exist in database
  */
-models.sequelize.sync().then(() => {
+Models.sequelize.sync().then(() => {
   server.listen(port);
   console.log('Database Sync Success');
   server.on('error', onError);

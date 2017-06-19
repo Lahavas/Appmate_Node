@@ -2,10 +2,10 @@ const express = require('express');
 
 const bodyParser = require('body-parser');
 
-const auth = require('./middlewares/auth')();
-
 const projects = require('./routers/project/projects');
 const users = require('./routers/user/users');
+
+const auth = require('./middlewares/auth')();
 
 const error = require('./error');
 

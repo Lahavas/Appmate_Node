@@ -6,8 +6,8 @@ const upload = multer({ dest:'uploads/' });
 
 const controller = require('./user.controller');
 
-router.route('/login')
-  .post(upload.single('userImage'), controller.login);
+// router.route('/login')
+//   .post(upload.single('userImage'), controller.login);
 
 router.route('/profile')
   .get(controller.showMyProfile)
