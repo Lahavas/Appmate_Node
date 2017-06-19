@@ -29,10 +29,11 @@ router.route('/:projectId/fields')
 
 router.route('/:projectId/apply')
   .post(controller.applyProject);
-//
-// router.route('/:projectId/recruit')
-//   .post(controller.recruitProject);
-//
+
+router.route('/:projectId/recruit')
+  .get(controller.showRecruitMember);
+  //.post(controller.recruitProject);
+
 router.route('/:projectId/comment')
   .get(controller.showCommentList)
   .post(controller.setProjectComment);

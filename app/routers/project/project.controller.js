@@ -762,3 +762,47 @@ exports.applyProject = async (req, res, next) => {
     return next(error);
   }
 };
+
+exports.showRecruitMember = async (req, res, next) => {
+  try {
+    // User Authorization
+    const myUserId = parseInt(req.headers.userid, 10);
+    if (!myUserId) {
+      return next(new Error('No myUserId'));
+    }
+
+    const projectId = parseInt(req.params.projectId, 10);
+    if (!projectId) {
+      return next(new Error('No projectId'));
+    }
+
+    const users = await Models.Project.findAll({
+      where: {
+        id: projectId
+      },
+      attributes: [ 'projectMemberNumber' ],
+      include: [
+        {
+          model: Models.User,
+          as: 'Applicants',
+          attributes: [ 'id', 'userNickname', 'userImage' ],
+          through: { attributes: [] }
+        }
+      ]
+    });
+
+    if (!users) {
+      return next(new Error("Error to create tuple"));
+    }
+
+    return res.status(201).json({
+      'msg': 'success',
+      'data': {
+        'users': users
+      }
+    });
+  }
+  catch (error) {
+    return next(error);
+  }
+};
