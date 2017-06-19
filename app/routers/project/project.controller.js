@@ -187,6 +187,11 @@ exports.showProject = async (req, res, next) => {
           Models.sequelize.fn('COUNT',
             Models.sequelize.col('Likes.id')
           ), 'isLike'
+        ],
+        [
+          Models.sequelize.fn('COUNT',
+            Models.sequelize.col('Applicants.id')
+          ), 'isApplied'
         ]
       ],
       include: [
@@ -202,6 +207,16 @@ exports.showProject = async (req, res, next) => {
           through: {
             where: {
               'likeUserId': myUserId
+            }
+          }
+        },
+        {
+          model: Models.User,
+          as: 'Applicants',
+          attributes: [],
+          through: {
+            where: {
+              'applicantId': myUserId
             }
           }
         },
@@ -439,6 +454,11 @@ exports.setProjectLike = async (req, res, next) => {
           Models.sequelize.fn('COUNT',
             Models.sequelize.col('Likes.id')
           ), 'isLike'
+        ],
+        [
+          Models.sequelize.fn('COUNT',
+            Models.sequelize.col('Applicants.id')
+          ), 'isApplied'
         ]
       ],
       include: [
@@ -454,6 +474,16 @@ exports.setProjectLike = async (req, res, next) => {
           through: {
             where: {
               'likeUserId': myUserId
+            }
+          }
+        },
+        {
+          model: Models.User,
+          as: 'Applicants',
+          attributes: [],
+          through: {
+            where: {
+              'applicantId': myUserId
             }
           }
         },
