@@ -168,7 +168,7 @@ module.exports = {
       { id: 163, projectId: 41, projectFieldId: 26, createdAt: new Date(), updatedAt: new Date()},
       { id: 164, projectId: 41, projectFieldId: 27, createdAt: new Date(), updatedAt: new Date()},
       { id: 164, projectId: 42, projectFieldId: 28, createdAt: new Date(), updatedAt: new Date()},
-      { id: 164, projectId: 42, projectFieldId: 29, createdAt: new Date(), updatedAt: new Date()}
+      { id: 164, projectId: 42, projectFieldId: 29, createdAt: new Date(), updatedAt: new Date()},
       { id: 164, projectId: 42, projectFieldId: 30, createdAt: new Date(), updatedAt: new Date()}
 
     ], {});
