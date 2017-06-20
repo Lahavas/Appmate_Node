@@ -6,7 +6,7 @@ module.exports = {
     return queryInterface.bulkInsert('Identities', [
       { id: 1, identityName: 'hard working' },
       { id: 2, identityName: 'bring idea' },
-      { id: 3, identityName: 'problemsolver' },
+      { id: 3, identityName: 'problem solver' },
       { id: 4, identityName: 'quick learner' },
       { id: 5, identityName: 'free mind' },
       { id: 6, identityName: 'brain' },
