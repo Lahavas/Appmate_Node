@@ -1098,9 +1098,10 @@ exports.showUserList = async (req, res, next) => {
             Models.sequelize.col( 'UserPlace.coordinate' )
           ) , 'ASC'
         ]
-      ],
-      limit: 20,
-      subQuery: false
+      ]
+      // ,
+      // limit: 20,
+      // subQuery: false
     });
 
     if (!users) {
@@ -1191,9 +1192,10 @@ exports.showUserMapList = async (req, res, next) => {
             Models.sequelize.col( 'UserPlace.coordinate' )
           ) , 'ASC'
         ]
-      ],
-      limit: 20,
-      subQuery: false
+      ]
+      // ,
+      // limit: 20,
+      // subQuery: false
     });
 
     if (!users) {
@@ -1284,9 +1286,10 @@ exports.showUserMapListWithPoint = async (req, res, next) => {
             Models.sequelize.col( 'UserPlace.coordinate' )
           ) , 'ASC'
         ]
-      ],
-      limit: 20,
-      subQuery: false
+      ]
+      // ,
+      // limit: 20,
+      // subQuery: false
     });
 
     if (!users) {
