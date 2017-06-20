@@ -1099,7 +1099,7 @@ exports.showUserList = async (req, res, next) => {
           ) , 'ASC'
         ]
       ],
-      limit: 10,
+      limit: 20,
       subQuery: false
     });
 
@@ -1192,7 +1192,7 @@ exports.showUserMapList = async (req, res, next) => {
           ) , 'ASC'
         ]
       ],
-      limit: 10,
+      limit: 20,
       subQuery: false
     });
 
@@ -1285,7 +1285,7 @@ exports.showUserMapListWithPoint = async (req, res, next) => {
           ) , 'ASC'
         ]
       ],
-      limit: 10,
+      limit: 20,
       subQuery: false
     });
 
