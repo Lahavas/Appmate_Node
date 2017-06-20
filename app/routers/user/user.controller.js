@@ -337,9 +337,9 @@ exports.showMyProject = async (req, res, next) => {
     });
 
     const projectLike = await Models.Project.findAll({
-      where: {
-        projectState: '모집'
-      },
+      // where: {
+      //   projectState: '모집'
+      // },
       attributes: [
         'id', 'projectName',
         [
@@ -350,14 +350,6 @@ exports.showMyProject = async (req, res, next) => {
         ]
       ],
       include: [
-        {
-          model: Models.User,
-          as: 'Owner',
-          attributes: [ 'id', 'userNickname', 'userImage' ],
-          where: {
-            id: myUserId
-          }
-        },
         {
           model: Models.User,
           as: 'Likes',
@@ -742,9 +734,9 @@ exports.showOtherProject = async (req, res, next) => {
     // });
 
     const projectLike = await Models.Project.findAll({
-      where: {
-        projectState: '모집'
-      },
+      // where: {
+      //   projectState: '모집'
+      // },
       attributes: [
         'id', 'projectName',
         [
@@ -755,14 +747,6 @@ exports.showOtherProject = async (req, res, next) => {
         ]
       ],
       include: [
-        {
-          model: Models.User,
-          as: 'Owner',
-          attributes: [ 'id', 'userNickname', 'userImage' ],
-          where: {
-            id: myUserId
-          }
-        },
         {
           model: Models.User,
           as: 'Likes',
