@@ -360,6 +360,11 @@ exports.showMyProject = async (req, res, next) => {
       include: [
         {
           model: Models.User,
+          as: 'Owner',
+          attributes: [ 'id', 'userNickname', 'userImage' ]
+        },
+        {
+          model: Models.User,
           as: 'Likes',
           attributes: [],
           where: {
@@ -765,6 +770,11 @@ exports.showOtherProject = async (req, res, next) => {
         ]
       ],
       include: [
+        {
+          model: Models.User,
+          as: 'Owner',
+          attributes: [ 'id', 'userNickname', 'userImage' ]
+        },
         {
           model: Models.User,
           as: 'Likes',
