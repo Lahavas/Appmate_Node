@@ -61,7 +61,9 @@ exports.showProjectList = async (req, res, next) => {
           ) , 'ASC'
         ]
       ],
-      group: [ 'id' ]
+      group: [ 'id' ],
+      limit: 10,
+      subQuery: false
     });
 
     if (!projects) {
@@ -392,7 +394,9 @@ exports.showProjectLikes = async (req, res, next) => {
           attributes: [ 'id', 'userNickname', 'userImage' ],
           through: { attributes: [] }
         }
-      ]
+      ],
+      limit: 5,
+      subQuery: false
     });
 
     if (!users) {
