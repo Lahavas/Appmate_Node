@@ -236,9 +236,7 @@ exports.showMyProject = async (req, res, next) => {
           model: Models.ProjectBackground,
           attributes: [ 'projectBackgroundImage' ]
         }
-      ],
-      limit: 3,
-      subQuery: false
+      ]
     });
 
     const projectComplete = await Models.Project.findAll({
@@ -272,9 +270,7 @@ exports.showMyProject = async (req, res, next) => {
           model: Models.ProjectBackground,
           attributes: [ 'projectBackgroundImage' ]
         }
-      ],
-      limit: 3,
-      subQuery: false
+      ]
     });
 
     const projectApply = await Models.Project.findAll({
@@ -308,9 +304,7 @@ exports.showMyProject = async (req, res, next) => {
           model: Models.ProjectBackground,
           attributes: [ 'projectBackgroundImage' ]
         }
-      ],
-      limit: 3,
-      subQuery: false
+      ]
     });
 
     const projectRecruit = await Models.Project.findAll({
@@ -339,9 +333,7 @@ exports.showMyProject = async (req, res, next) => {
           model: Models.ProjectBackground,
           attributes: [ 'projectBackgroundImage' ]
         }
-      ],
-      limit: 3,
-      subQuery: false
+      ]
     });
 
     const projectLike = await Models.Project.findAll({
@@ -375,9 +367,7 @@ exports.showMyProject = async (req, res, next) => {
           model: Models.ProjectBackground,
           attributes: [ 'projectBackgroundImage' ]
         }
-      ],
-      limit: 3,
-      subQuery: false
+      ]
     });
 
     if (!projectRunning || !projectComplete || !projectApply || !projectRecruit || !projectLike) {
@@ -619,9 +609,7 @@ exports.showOtherProject = async (req, res, next) => {
           model: Models.ProjectBackground,
           attributes: [ 'projectBackgroundImage' ]
         }
-      ],
-      limit: 3,
-      subQuery: false
+      ]
     });
 
     const projectComplete = await Models.Project.findAll({
@@ -655,9 +643,7 @@ exports.showOtherProject = async (req, res, next) => {
           model: Models.ProjectBackground,
           attributes: [ 'projectBackgroundImage' ]
         }
-      ],
-      limit: 3,
-      subQuery: false
+      ]
     });
 
     const projectApply = await Models.Project.findAll({
@@ -691,9 +677,7 @@ exports.showOtherProject = async (req, res, next) => {
           model: Models.ProjectBackground,
           attributes: [ 'projectBackgroundImage' ]
         }
-      ],
-      limit: 3,
-      subQuery: false
+      ]
     });
 
     const projectRecruit = await Models.Project.findAll({
@@ -722,9 +706,7 @@ exports.showOtherProject = async (req, res, next) => {
           model: Models.ProjectBackground,
           attributes: [ 'projectBackgroundImage' ]
         }
-      ],
-      limit: 3,
-      subQuery: false
+      ]
     });
 
     // const projectTemp = await Models.Project.findAll({
@@ -787,9 +769,7 @@ exports.showOtherProject = async (req, res, next) => {
           model: Models.ProjectBackground,
           attributes: [ 'projectBackgroundImage' ]
         }
-      ],
-      limit: 3,
-      subQuery: false
+      ]
     });
 
     if (!projectRunning || !projectComplete || !projectApply || !projectRecruit || !projectLike) {
