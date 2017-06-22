@@ -824,7 +824,7 @@ exports.setRecruitProject = async (req, res, next) => {
       return next(new Error('No projectId'));
     }
 
-    const recruitUserIds = JSON.parse(req.body.recruitUserIds);
+    const recruitUserIds = req.body.recruitUserIds;
 
     const recruitUserArray = [];
     for (let recruitUserId of recruitUserIds) {
@@ -836,6 +836,12 @@ exports.setRecruitProject = async (req, res, next) => {
 
     const projectRunner = await Models.ProjectRunner.bulkCreate(recruitUserArray, {
       individualHooks: true
+    });
+
+    const deleteApplies = await Models.ProjectApply.destroy({
+      where: {
+        projectId: projectId
+      }
     });
 
     const project = await Models.Project.update(
