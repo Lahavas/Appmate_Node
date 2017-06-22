@@ -1089,9 +1089,6 @@ exports.showUserList = async (req, res, next) => {
           ) , 'ASC'
         ]
       ]
-      // ,
-      // limit: 20,
-      // subQuery: false
     });
 
     if (!users) {
@@ -1183,9 +1180,6 @@ exports.showUserMapList = async (req, res, next) => {
           ) , 'ASC'
         ]
       ]
-      // ,
-      // limit: 20,
-      // subQuery: false
     });
 
     if (!users) {
@@ -1277,9 +1271,6 @@ exports.showUserMapListWithPoint = async (req, res, next) => {
           ) , 'ASC'
         ]
       ]
-      // ,
-      // limit: 20,
-      // subQuery: false
     });
 
     if (!users) {
