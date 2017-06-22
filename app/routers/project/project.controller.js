@@ -10,9 +10,9 @@ exports.showProjectList = async (req, res, next) => {
 
     const projects = await Models.Project.findAll({
       where: {
-        'ownerId': {
-          $not: myUserId
-        },
+        // 'ownerId': {
+        //   $not: myUserId
+        // },
         'projectClosingDate': {
           $gt: new Date()
         },
