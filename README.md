@@ -1,1 +1,3 @@
-# Appmate_Node
+# Appmate_Nod
+
+모바일 어플리케이션 앱메이트 서버 코드입니다.
